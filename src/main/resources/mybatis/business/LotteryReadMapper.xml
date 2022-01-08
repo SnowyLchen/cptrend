@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cj.cptrend.lottery.mapper.LotteryReadMapper">
+
+    <resultMap id="LotteryResult" type="com.cj.cptrend.lottery.domain.Lottery">
+        <id column="num_periods" property="numPeriods"/>
+        <result column="pre_num1" property="preNum1"/>
+        <result column="pre_num2" property="preNum2"/>
+        <result column="pre_num3" property="preNum3"/>
+        <result column="pre_num4" property="preNum4"/>
+        <result column="pre_num5" property="preNum5"/>
+        <result column="suf_num1" property="sufNum1"/>
+        <result column="suf_num2" property="sufNum2"/>
+        <result column="date" property="date"/>
+    </resultMap>
+
+    <sql id="LotteryColumns">
+        num_periods,pre_num1,pre_num2,pre_num3,pre_num4,pre_num5,suf_num1,suf_num2
+    </sql>
+
+    <select id="selectLotteryByPrivateKey" resultMap="LotteryResult">
+        SELECT
+        <include refid="LotteryColumns"/>
+        FROM lottery
+        WHERE num_periods
+        = #{numPeriods}
+    </select>
+
+    <select id="selectLotteryList" resultMap="LotteryResult">
+        SELECT
+        <include refid="LotteryColumns"/>
+        FROM lottery
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="numPeriods != null">
+                    AND num_periods = #{numPeriods}
+                </if>
+                <if test="preNum1 != null">
+                    AND pre_num1 = #{preNum1}
+                </if>
+                <if test="preNum2 != null">
+                    AND pre_num2 = #{preNum2}
+                </if>
+                <if test="preNum3 != null">
+                    AND pre_num3 = #{preNum3}
+                </if>
+                <if test="preNum4 != null">
+                    AND pre_num4 = #{preNum4}
+                </if>
+                <if test="preNum5 != null">
+                    AND pre_num5 = #{preNum5}
+                </if>
+                <if test="sufNum1 != null">
+                    AND suf_num1 = #{sufNum1}
+                </if>
+                <if test="sufNum2 != null">
+                    AND suf_num2 = #{sufNum2}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+</mapper>

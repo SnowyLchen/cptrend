@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh"
+      xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="author" content="Website">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+    <title>我的网站</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/swiper-3.3.1.min.css}" rel="stylesheet">
+    <link th:href="@{/css/aos.css}" rel="stylesheet">
+    <link th:href="@{/css/xlx.shuwon.css}" rel="stylesheet">
+    <!--    表格-->
+    <link th:href="@{/css/table/tailwind.min.css}" rel="stylesheet">
+    <link th:href="@{/css/table/style.css}" rel="stylesheet">
+    <!--    <link href="http://www.htmlsucai.com/favicon.ico" rel="shortcut icon">-->
+    <!--    <link href="http://www.htmlsucai.com/demo/2018/favicon.ico" *tpa="http://r060.mobanvip.com/favicon.ico*/"-->
+    <!--          rel="shortcut icon">-->
+</head>
+<style>
+    .choose {
+        color: red;
+        font-weight: bold;
+        /*background-color: rgb(255, 228, 225);*/
+    }
+
+    .ash {
+        color: #ccc;
+    }
+</style>
+<body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
+
+<div class="zhidingUP"></div>
+<div class="zhiding"></div>
+
+<div id="mobileNav">
+    <ul>
+    </ul>
+</div>
+
+<div class="shade show">
+    <div class="shade-top"></div>
+    <div class="shade-bottom"></div>
+    <img src="/image/loading.gif" class="loading">
+</div>
+
+<header>
+    <div class="nav-top">
+        <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/index.htm"
+           class="logo">
+            <img src="/image/logo.png" class="img1">
+            <img src="/image/logo-top.png" class="img2">
+        </a>
+        <div class="memu">
+            <div id="navToggle">
+                <span class="span1"></span>
+                <span class="span2"></span>
+                <span class="span3"></span>
+            </div>
+            <img th:src="@{/image/menu.png}" class="img1">
+            <img th:src="@{/image/menu-top.png}" class="img2">
+        </div>
+    </div>
+    <nav class="nav">
+        <div class="line"></div>
+        <ul class="nav-ul1">
+            <li class="n1">
+                <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/product-cj.html"
+                   class="a1">产品中心</a>
+                <ul class="nav-ul2">
+                    <li>
+                        <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/product-cj.html">场景</a>
+                        <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/product-cp.html">产品</a>
+                        <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/product-xl.html">系列</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="n2">
+                <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/brand-ln.html"
+                   class="a1">品牌中心</a>
+                <ul class="nav-ul2">
+                    <li>
+
+                        <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/brand-ln.html">品牌理念</a>
+
+                        <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/brand-zx.html">品牌资讯</a>
+
+                        <a href="http://www.htmlsucai.com/demo/2018/04/%E5%A4%A7%E6%B0%94%E7%9A%84%E5%AE%B6%E5%85%B7%E8%A3%85%E9%A5%B0%E4%BA%A7%E5%93%81%E4%BC%81%E4%B8%9A%E7%AB%99%E5%93%8D%E5%BA%94%E5%BC%8F%E6%A8%A1%E6%9D%BF/brand-yc.html">品牌用材</a>
+
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="line line-b"></div>
+    </nav>
+</header>
+
+<section class="home-body BIGBOX">
+    <div class="main-body">
+        <div class="flex flex-col justify-center items-center bg-gray-100 py-5">
+            <h1 class="text-xl font-bold uppercase my-3">表格</h1>
+            <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">
+                <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/js/aos.js}"></script>
+<script th:src="@{/js/swiper-3.3.1.jquery..js}"></script>
+<script th:src="@{/js/xlx.shuwon.js}" id="JS" page="home"></script>
+<!--table-->
+<script th:src="@{/js/table/vue.min.js}"></script>
+<script th:src="@{/js/table/script.js}"></script>
+<script th:inline="javascript">
+    if ($(window).width() > 1024) {
+        AOS.init({
+            duration: 600,
+            easing: 'ease-out',
+        });
+    }
+    var data = [[${cs}]];
+
+    function getLi(idx, num, choose, isTitle) {
+        var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
+        return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}">${num}</li>`;
+    }
+
+    function getCell1(num) {
+        return ` <li class="bg-purple-100 flex items-center justify-center li-0">${num}</li>`;
+    }
+
+    function getTitle() {
+        var $this = $('#ul-data');
+        for (let i = 1; i < 51; i++) {
+            if (i >= 36) {
+                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
+                $this.append(getLi(i - 35, it, undefined, true));
+            } else {
+                var it2 = i < 10 ? ('0' + i) : i;
+                $this.append(getLi(i, it2, undefined, true));
+            }
+        }
+    }
+
+    function getRow(item) {
+        var data = [];
+        for (let i = 1; i < 8; i++) {
+            if (i < 7) {
+                data.push(item['preNum' + i]);
+            } else {
+                data.push(item['sufNum' + (i - 6)]);
+            }
+        }
+        var $this = $('#ul-data');
+        for (let i = 1; i < 51; i++) {
+            if (i >= 36) {
+                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
+                $this.append(getLi(i - 35, it, data[parseInt(it)]));
+            } else {
+                var it2 = i < 10 ? ('0' + i) : i;
+                $this.append(getLi(i, it2, data[parseInt(it2)]));
+            }
+        }
+    }
+
+    $(function () {
+            getTitle();
+            $.each(data || [], function (index, item) {
+                var $this = $('#ul-data');
+                $this.append(getCell1(item.numPeriods));
+                getRow(item);
+                // var $this = $('#ul-data');
+                // $this.append(getLi(index, item.numPeriods));
+                // $this.append(getLi(index, item.preNum1));
+                // $this.append(getLi(index, item.preNum2));
+                // $this.append(getLi(index, item.preNum3));
+                // $this.append(getLi(index, item.preNum4));
+                // $this.append(getLi(index, item.preNum5));
+                // $this.append(getLi(index, item.sufNum1));
+                // $this.append(getLi(index, item.sufNum2));
+            })
+        }
+    )
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cj.cptrend.lottery.mapper.LotteryWriteMapper">
+
+    <insert id="insertLottery" useGeneratedKeys="true"
+            keyProperty="numPeriods">
+        INSERT INTO lottery
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="numPeriods != null">
+                num_periods,
+            </if>
+            <if test="preNum1 != null">
+                pre_num1,
+            </if>
+            <if test="preNum2 != null">
+                pre_num2,
+            </if>
+            <if test="preNum3 != null">
+                pre_num3,
+            </if>
+            <if test="preNum4 != null">
+                pre_num4,
+            </if>
+            <if test="preNum5 != null">
+                pre_num5,
+            </if>
+            <if test="sufNum1 != null">
+                suf_num1,
+            </if>
+            <if test="sufNum2 != null">
+                suf_num2,
+            </if>
+        </trim>
+        <trim prefix=" VALUE (" suffix=")" suffixOverrides=",">
+            <if test="numPeriods != null">
+                #{numPeriods},
+            </if>
+            <if test="preNum1 != null">
+                #{preNum1},
+            </if>
+            <if test="preNum2 != null">
+                #{preNum2},
+            </if>
+            <if test="preNum3 != null">
+                #{preNum3},
+            </if>
+            <if test="preNum4 != null">
+                #{preNum4},
+            </if>
+            <if test="preNum5 != null">
+                #{preNum5},
+            </if>
+            <if test="sufNum1 != null">
+                #{sufNum1},
+            </if>
+            <if test="sufNum2 != null">
+                #{sufNum2},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateLottery">
+        UPDATE lottery
+        <set>
+            <if test="numPeriods != null">
+                num_periods = #{numPeriods},
+            </if>
+            <if test="preNum1 != null">
+                pre_num1 = #{preNum1},
+            </if>
+            <if test="preNum2 != null">
+                pre_num2 = #{preNum2},
+            </if>
+            <if test="preNum3 != null">
+                pre_num3 = #{preNum3},
+            </if>
+            <if test="preNum4 != null">
+                pre_num4 = #{preNum4},
+            </if>
+            <if test="preNum5 != null">
+                pre_num5 = #{preNum5},
+            </if>
+            <if test="sufNum1 != null">
+                suf_num1 = #{sufNum1},
+            </if>
+            <if test="sufNum2 != null">
+                suf_num2 = #{sufNum2},
+            </if>
+        </set>
+        WHERE num_periods = #{numPeriods};
+    </update>
+
+    <delete id="deleteLottery" parameterType="java.lang.Integer">
+            DELETE FROM lottery WHERE num_periods = #{numPeriods};
+        </delete>
+
+
+</mapper>

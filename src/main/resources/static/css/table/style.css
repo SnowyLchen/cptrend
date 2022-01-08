@@ -1,0 +1,17 @@
+.table {
+    grid-template-columns: repeat(51, minmax(0, 1fr));
+    grid-template-rows: repeat(55, minmax(0, 1fr));
+    min-width: 35rem;
+}
+
+li.character:nth-child(51n + 1) {
+    background: rgba(216, 187, 255, 0.3);
+}
+
+li.character:nth-child(-n+51) {
+    background: rgba(192, 253, 255, 0.3);
+}
+
+li.character:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+}
