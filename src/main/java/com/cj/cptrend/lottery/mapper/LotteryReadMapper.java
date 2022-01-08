@@ -2,6 +2,7 @@ package com.cj.cptrend.lottery.mapper;
 
 import com.cj.cptrend.lottery.domain.Lottery;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,7 +11,6 @@ import java.util.List;
  *
  * @author chen
  */
-@Mapper
 public interface LotteryReadMapper {
 
     /**
