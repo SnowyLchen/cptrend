@@ -32,6 +32,9 @@
             <if test="sufNum2 != null">
                 suf_num2,
             </if>
+            <if test="date != null">
+                date,
+            </if>
         </trim>
         <trim prefix=" VALUE (" suffix=")" suffixOverrides=",">
             <if test="numPeriods != null">
@@ -57,6 +60,9 @@
             </if>
             <if test="sufNum2 != null">
                 #{sufNum2},
+            </if>
+            <if test="date != null">
+                #{date},
             </if>
         </trim>
     </insert>
