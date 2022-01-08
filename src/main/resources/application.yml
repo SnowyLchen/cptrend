@@ -47,7 +47,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://150.158.80.116:3306/cp?useUnicode=true&characterEncoding=utf8
     username: root
-    password: Cjl19980112!
+    password:
     druid:
       #2.连接池配置
       #初始化连接池的连接数量 大小，最小，最大
