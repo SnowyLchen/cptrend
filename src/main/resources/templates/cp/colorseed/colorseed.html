@@ -26,19 +26,29 @@
     .choose {
         color: red;
         font-weight: bold;
+        display: block;
         /*background-color: rgb(255, 228, 225);*/
     }
 
     .ash {
         color: #ccc;
     }
+
+    .cycle {
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+        display: inline-block;
+        background: #238ff9;
+        vertical-align: top;
+    }
 </style>
 <body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
 
 <div class="zhidingUP"></div>
 <div class="zhiding"></div>
-
 <div id="mobileNav">
+
     <ul>
     </ul>
 </div>
@@ -128,6 +138,9 @@
 
     function getLi(idx, num, choose, isTitle) {
         var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
+        if (choose) {
+            return `<span class="cycle"><li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}">${num}</li></span>`;
+        }
         return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}">${num}</li>`;
     }
 
