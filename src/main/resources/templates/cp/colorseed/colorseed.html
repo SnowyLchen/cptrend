@@ -26,18 +26,16 @@
     .choose {
         color: red;
         font-weight: bold;
-        display: block;
-        /*background-color: rgb(255, 228, 225);*/
     }
 
     .ash {
         color: #ccc;
     }
 
-    .cycle {
+    .cycle1 {
         border-radius: 50%;
-        height: 20px;
-        width: 20px;
+        height: 100%;
+        width: 60%;
         display: inline-block;
         background: #238ff9;
         vertical-align: top;
@@ -48,9 +46,7 @@
 <div class="zhidingUP"></div>
 <div class="zhiding"></div>
 <div id="mobileNav">
-
-    <ul>
-    </ul>
+    <ul></ul>
 </div>
 
 <div class="shade show">
@@ -122,12 +118,13 @@
 </section>
 <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
 <script th:src="@{/js/aos.js}"></script>
-<script th:src="@{/js/swiper-3.3.1.jquery..js}"></script>
+<script th:src="@{/js/swiper.js}"></script>
 <script th:src="@{/js/xlx.shuwon.js}" id="JS" page="home"></script>
 <!--table11-->
 <script th:src="@{/js/table/vue.min.js}"></script>
 <script th:src="@{/js/table/script.js}"></script>
 <script th:inline="javascript">
+    var lineVal = {};
     if ($(window).width() > 1024) {
         AOS.init({
             duration: 600,
@@ -136,10 +133,10 @@
     }
     var data = [[${cs}]];
 
-    function getLi(idx, num, choose, isTitle) {
+    function getLi(item, idx, num, choose, isTitle) {
         var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
         if (choose) {
-            return `<span class="cycle"><li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}">${num}</li></span>`;
+            return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}"><span class="cycle" id="${item.numPeriods}-${idx}">${num}</span></li>`;
         }
         return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}">${num}</li>`;
     }
@@ -153,10 +150,10 @@
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
-                $this.append(getLi(i - 35, it, undefined, true));
+                $this.append(getLi(null, i - 35, it, undefined, true));
             } else {
                 var it2 = i < 10 ? ('0' + i) : i;
-                $this.append(getLi(i, it2, undefined, true));
+                $this.append(getLi(null, i, it2, undefined, true));
             }
         }
     }
@@ -174,23 +171,48 @@
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
-                $this.append(getLi(i - 35, it, data.includes(it + '')));
+                $this.append(getLi(item, i - 35, it, data.includes(it + '')));
             } else {
                 var it2 = i < 10 ? ('0' + i) : i;
-                $this.append(getLi(i, it2, data.includes('' + it2)));
+                $this.append(getLi(item, i, it2, data.includes('' + it2)));
             }
         }
     }
 
     $(function () {
-            getTitle();
-            $.each(data || [], function (index, item) {
-                var $this = $('#ul-data');
-                $this.append(getCell1(item.numPeriods));
-                getRow(item);
-            })
-        }
-    )
+        getTitle();
+        $.each(data || [], function (index, item) {
+            var $this = $('#ul-data');
+            $this.append(getCell1(item.numPeriods));
+            getRow(item);
+        })
+        line();
+        lineVal.forEach((item, index) => {
+            console.log(item);
+        })
+    })
+
+    function line() {
+        var preId, preVal, flag;
+        $.each($('li span'), function (index, item) {
+            var val = $(item).attr('id');
+            var v1 = val.split('-')[0];
+            var v2 = val.split('-')[1];
+            if (preId && preVal) {
+                flag = abs(preId, v1) &&
+                    abs(preVal, v2);
+            }
+            preId = v1;
+            preVal = v2;
+            if (flag) {
+                lineVal.push(val);
+            }
+        })
+    }
+
+    function abs(num1, num2) {
+        return Math.abs(num1 - num2) === 1
+    }
 </script>
 
 
