@@ -10,6 +10,7 @@ li.character:nth-child(51n + 1) {
 
 li.character:nth-child(-n+51) {
     background: rgba(192, 253, 255, 0.3);
+    /*background:red;*/
 }
 
 li.character:hover {

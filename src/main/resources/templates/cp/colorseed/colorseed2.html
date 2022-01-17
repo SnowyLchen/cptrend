@@ -18,7 +18,6 @@
     <!--    表格-->
     <link th:href="@{/css/table/tailwind.min.css}" rel="stylesheet">
     <link th:href="@{/css/table/style.css}" rel="stylesheet">
-    <link th:href="@{/css/online/onLine.css}" rel="stylesheet">
     <!--    <link href="http://www.htmlsucai.com/favicon.ico" rel="shortcut icon">-->
     <!--    <link href="http://www.htmlsucai.com/demo/2018/favicon.ico" *tpa="http://r060.mobanvip.com/favicon.ico*/"-->
     <!--          rel="shortcut icon">-->
@@ -40,17 +39,6 @@
         display: inline-block;
         background: #238ff9;
         vertical-align: top;
-    }
-
-    .demo {
-        position: fixed;
-    }
-
-    .cavans {
-        z-index: 2;
-        position: absolute;
-        top: calc(10% - 124px);
-        left: calc(10% - 110px);
     }
 </style>
 <body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
@@ -120,14 +108,11 @@
 
 <section class="home-body BIGBOX">
     <div class="main-body">
-        <div class="flex flex-col justify-center items-center bg-gray-100 py-5 demo" data-pair="3">
+        <div class="flex flex-col justify-center items-center bg-gray-100 py-5">
             <h1 class="text-xl font-bold uppercase my-3">表格</h1>
             <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">
                 <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>
             </ul>
-            <!-- -->
-            <canvas class="canvas cavans" width="480" height="430"></canvas>
-            <canvas class="backcanvas cavans" width="480" height="430"></canvas>
         </div>
     </div>
 </section>
@@ -139,7 +124,7 @@
 <script th:src="@{/js/table/vue.min.js}"></script>
 <script th:src="@{/js/table/script.js}"></script>
 <script th:inline="javascript">
-    var lineVal = [];
+    var lineVal = {};
     if ($(window).width() > 1024) {
         AOS.init({
             duration: 600,
@@ -148,10 +133,10 @@
     }
     var data = [[${cs}]];
 
-    function getLi(item, idx, num, choose, isTitle, isPos) {
+    function getLi(item, idx, num, choose, isTitle) {
         var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
         if (choose) {
-            return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}"><span class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</span></li>`;
+            return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}"><span class="cycle" id="${item.numPeriods}-${idx}">${num}</span></li>`;
         }
         return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}">${num}</li>`;
     }
@@ -165,10 +150,10 @@
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
-                $this.append(getLi(null, i - 35, it, undefined, true, 1));
+                $this.append(getLi(null, i - 35, it, undefined, true));
             } else {
                 var it2 = i < 10 ? ('0' + i) : i;
-                $this.append(getLi(null, i, it2, undefined, true, 0));
+                $this.append(getLi(null, i, it2, undefined, true));
             }
         }
     }
@@ -186,10 +171,10 @@
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
-                $this.append(getLi(item, i - 35, it, data.includes(it + ''), undefined, 1));
+                $this.append(getLi(item, i - 35, it, data.includes(it + '')));
             } else {
                 var it2 = i < 10 ? ('0' + i) : i;
-                $this.append(getLi(item, i, it2, data.includes('' + it2), undefined, 0));
+                $this.append(getLi(item, i, it2, data.includes('' + it2)));
             }
         }
     }
@@ -201,41 +186,27 @@
             $this.append(getCell1(item.numPeriods));
             getRow(item);
         })
+        line();
+        lineVal.forEach((item, index) => {
+            console.log(item);
+        })
     })
 
     function line() {
-        var preId, preVal, pre, flag = false, value = [];
-
+        var preId, preVal, flag;
         $.each($('li span'), function (index, item) {
             var val = $(item).attr('id');
             var v1 = val.split('-')[0];
             var v2 = val.split('-')[1];
-            if (index === 0) {
-                lineVal.push({key: v1, value: []})
-            } else {
-                if (lineVal[lineVal.length - 1].key == v1) {
-                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});
-                    lineVal[lineVal.length - 1].value = value;
-                } else {
-                    value = []
-                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});
-                    lineVal.push({
-                        key: v1, value: value
-                    });
-                }
+            if (preId && preVal) {
+                flag = abs(preId, v1) &&
+                    abs(preVal, v2);
             }
-            flag = abs(preId, v1) && abs(preVal, v2);
-            if (preId === undefined || (preId !== v1 && preId - v1 === 2)) {
-                preId = v1;
+            preId = v1;
+            preVal = v2;
+            if (flag) {
+                lineVal.push(val);
             }
-            if (preVal === undefined || (preVal !== v1)) {
-                preVal = v2;
-            }
-            // if (flag) {
-            // lineVal.push({
-            //     key: v1, value: value
-            // });
-            // }
         })
     }
 
@@ -245,38 +216,5 @@
 </script>
 
 
-<script th:src="@{/js/line/online.js}"></script>
-<script>
-    var dataNum = [];
-    $(function () {
-        var obj = $(".demo");
-        var size = obj.size();
-        for (var i = 0; i < size; i++) {
-            obj.eq(i).onLine({
-                regainCanvas: true
-            });
-        }
-        line();
-        for (let i = 0; i < lineVal.length; i++) {
-            var l1 = lineVal[i];
-            for (let j = 1; j < lineVal.length; j++) {
-                var l2 = lineVal[j];
-                if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 1) {
-                    l1.value.forEach(it1 => {
-                        l2.value.forEach(it2 => {
-                            if (it1.pos === it2.pos) {
-                                if (Math.abs(it1.v - it2.v) === 1) {
-                                    dataNum.push({moveX: it1.x, moveY: it1.y, toX: it2.x, toY: it2.y});
-                                }
-                            }
-                        });
-                    });
-                    break
-                }
-            }
-        }
-        strockline()
-    });
-</script>
 </body>
 </html>
