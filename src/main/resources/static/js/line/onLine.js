@@ -8,20 +8,20 @@
         part1 = $(".character.choose span[isEvenNum=true]");
         part2 = $(".character.choose span[isEvenNum=false]");
         //初始化赋值 列表内容
-        part1.each(function (index, element) {
+        part2.each(function (index, element) {
             $(this).attr({
-                group: "gpl",
-                left: $(this).position().left + $(this).outerWidth(),
-                top: $(this).position().top + $(this).outerHeight() / 2,
+                group: "gpr",
+                left: parseInt($(this).position().left + $(this).outerWidth()),
+                top: $(this).position().top + $(this).outerHeight()-$(this).outerHeight()*1/5,
                 sel: "0",
                 check: "0"
             });
         });
-        part2.each(function (index, element) {
+        part1.each(function (index, element) {
             $(this).attr({
-                group: "gpr",
-                left: $(this).position().left,
-                top: $(this).position().top + $(this).outerHeight() / 2,
+                group: "gpl",
+                left: parseInt($(this).position().left + $(this).outerWidth() - $(this).outerWidth() * 1 / 3),
+                top: $(this).position().top,
                 sel: "0",
                 check: "0"
             });
@@ -32,9 +32,6 @@
         var canvas = box.find(".canvas")[0];  //获取canvas  实际连线标签
         canvas.width = box.find(".table").width();//canvas宽度等于div容器宽度
         canvas.height = box.find(".table").height();
-        var backcanvas = box.find(".backcanvas")[0];  //获取canvas 模拟连线标签
-        backcanvas.width = box.find(".table").width();
-        backcanvas.height = box.find(".table").height();
         //连线数据
         var mx = [];//连线坐标
         var my = [];

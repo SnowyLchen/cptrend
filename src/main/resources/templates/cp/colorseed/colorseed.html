@@ -43,14 +43,13 @@
     }
 
     .demo {
-        position: fixed;
+        position: relative;
     }
 
     .cavans {
-        z-index: 2;
         position: absolute;
-        top: calc(10% - 124px);
-        left: calc(10% - 110px);
+        top: 0;
+        left: 0;
     }
 </style>
 <body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
@@ -118,16 +117,17 @@
     </nav>
 </header>
 
-<section class="home-body BIGBOX">
+<section class="home-body">
     <div class="main-body">
-        <div class="flex flex-col justify-center items-center bg-gray-100 py-5 demo" data-pair="3">
+        <div class="flex flex-col justify-center items-center bg-gray-100 py-5 demo " data-pair="3">
             <h1 class="text-xl font-bold uppercase my-3">表格</h1>
-            <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">
-                <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>
-            </ul>
-            <!-- -->
-            <canvas class="canvas cavans" width="480" height="430"></canvas>
-            <canvas class="backcanvas cavans" width="480" height="430"></canvas>
+                <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">
+                    <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>
+                </ul>
+                <!-- -->
+            <canvas class="canvas cavans" width="480" height="430">
+            </canvas>
+<!--            <canvas class="backcanvas cavans" width="480" height="430"></canvas>-->
         </div>
     </div>
 </section>
@@ -186,10 +186,10 @@
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
-                $this.append(getLi(item, i - 35, it, data.includes(it + ''), undefined, 1));
+                $this.append(getLi(item, i - 35, it, data.slice(5, data.length).includes(it + ''), undefined, 1));
             } else {
                 var it2 = i < 10 ? ('0' + i) : i;
-                $this.append(getLi(item, i, it2, data.includes('' + it2), undefined, 0));
+                $this.append(getLi(item, i, it2, data.slice(0, 5).includes('' + it2), undefined, 0));
             }
         }
     }
@@ -248,6 +248,72 @@
 <script th:src="@{/js/line/online.js}"></script>
 <script>
     var dataNum = [];
+
+    function lineToNum(values, loop) {
+        // 2个连线
+        // for (let i = 0; i < lineVal.length; i++) {
+        //     var l1 = lineVal[i];
+        //     for (let j = 1; j < lineVal.length; j++) {
+        //         var l2 = lineVal[j];
+        //         if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 2) {
+        //             l1.value.forEach(it1 => {
+        //                 l2.value.forEach(it2 => {
+        //                     if (it1.pos === it2.pos) {
+        //                         if (Math.abs(it1.v - it2.v) === 1) {
+        //                             dataNum.push({moveX: it1.x, moveY: it1.y, toX: it2.x, toY: it2.y});
+        //                         }
+        //                     }
+        //                 });
+        //             });
+        //             break
+        //         }
+        //     }
+        // }
+        // 3个连线
+        for (let i = 0; i < lineVal.length; i++) {
+            var l1 = lineVal[i];
+            for (let j = 1; j < lineVal.length; j++) {
+                var l2 = lineVal[j];
+                // key 相减=1
+                if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 1) {
+                    l1.value.forEach(it1 => {
+                        l2.value.forEach(it2 => {
+                            if (it1.pos === it2.pos) {
+                                // 值相减=1
+                                var a1 = it1.v - it2.v;
+                                if (Math.abs(a1) === 1) {
+                                    for (let k = 1; k < lineVal.length; k++) {
+                                        var l3 = lineVal[k];
+                                        // key 相减=1
+                                        if (Math.abs(parseInt(l2.key) - parseInt(l3.key)) === 1) {
+                                            l3.value.forEach(it3 => {
+                                                if (it3.pos === it2.pos) {
+                                                    // 值相减=1
+                                                    var b1 = it3.v - it2.v;
+                                                    if (Math.abs(b1) === 1) {
+                                                        a1 !== b1 && dataNum.push({
+                                                            moveX: it1.x,
+                                                            moveY: it1.y,
+                                                            toX: it3.x,
+                                                            toY: it3.y
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                            break
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    break
+                }
+            }
+        }
+        console.log(dataNum)
+    }
+
     $(function () {
         var obj = $(".demo");
         var size = obj.size();
@@ -257,24 +323,7 @@
             });
         }
         line();
-        for (let i = 0; i < lineVal.length; i++) {
-            var l1 = lineVal[i];
-            for (let j = 1; j < lineVal.length; j++) {
-                var l2 = lineVal[j];
-                if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 1) {
-                    l1.value.forEach(it1 => {
-                        l2.value.forEach(it2 => {
-                            if (it1.pos === it2.pos) {
-                                if (Math.abs(it1.v - it2.v) === 1) {
-                                    dataNum.push({moveX: it1.x, moveY: it1.y, toX: it2.x, toY: it2.y});
-                                }
-                            }
-                        });
-                    });
-                    break
-                }
-            }
-        }
+        lineToNum(lineVal);
         strockline()
     });
 </script>

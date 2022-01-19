@@ -1,6 +1,6 @@
 .table {
     grid-template-columns: repeat(51, minmax(0, 1fr));
-    grid-template-rows: repeat(55, minmax(0, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(0, 1fr));
     min-width: 35rem;
 }
 
