@@ -27,7 +27,7 @@ public class LotteryServiceImpl implements ILotteryService {
 
     @Override
     public List<Lottery> selectLotteryList(Lottery lottery) {
-        return mLotteryReadMapper.selectLotteryList(lottery).subList(0, 30);
+        return mLotteryReadMapper.selectLotteryList(lottery).subList(250, 300);
     }
 
     @Override

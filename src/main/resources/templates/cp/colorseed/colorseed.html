@@ -47,10 +47,41 @@
     }
 
     .cavans {
+        /*position: absolute;*/
+        /*top: 86px;*/
+        /*z-index: 2;*/
+        /*left: 104px;*/
+    }
+
+    .t {
+        border: 3px solid #CCC;
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 40px 100px;
+    }
+
+    .t tr:first-child td:not(:first-child) {
+        background-color: rgba(192, 253, 255, 0.3)
+    }
+
+    .t td {
+        width: 34px;
+        height: 34px;
+        border: 1px solid #b3b3b3;
+        align-items: center;
+        text-align: center;
+        cursor: default;
+    }
+
+    .t td:hover {
+        background-color: rgba(128, 128, 128, 0.1);
+    }
+
+    #lineCanvas {
         position: absolute;
-        top: 86px;
-        z-index: 2;
-        left: 104px;
+        top: 83px;
+        left: 80px;
     }
 </style>
 <body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
@@ -119,16 +150,22 @@
 </header>
 
 <section class="home-body">
-    <div class="main-body">
-        <div class="flex flex-col justify-center items-center bg-gray-100 py-5 demo " data-pair="3">
+    <div class="main-body" style="height: 1000px;">
+        <div class="flex flex-col justify-center items-center bg-gray-100 py-5 demo" data-pair="3">
             <h1 class="text-xl font-bold uppercase my-3">表格</h1>
-                <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">
-                    <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>
-                </ul>
-                <!-- -->
-            <canvas class="canvas cavans" width="480" height="430">
+            <canvas class=" w-11/12" width="480" height="430"
+                    id="lineCanvas">
             </canvas>
-<!--            <canvas class="backcanvas cavans" width="480" height="430"></canvas>-->
+            <!--            <table class="t grid w-11/12 text-lg shadow-md border border-solid bg-white">-->
+            <table class="t w-11/12 text-lg shadow-md border border-solid">
+                <tbody>
+                </tbody>
+            </table>
+            <!--            <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">-->
+            <!--                <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>-->
+            <!--            </ul>-->
+            <!-- -->
+            <!--            <canvas class="backcanvas cavans" width="480" height="430"></canvas>-->
         </div>
     </div>
 </section>
@@ -152,17 +189,20 @@
     function getLi(item, idx, num, choose, isTitle, isPos) {
         var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
         if (choose) {
-            return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}"><span class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</span></li>`;
+            return `<td class="character border  items-center justify-center li-${idx} ${chooseCss}"><span class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</span></td>`;
         }
-        return `<li class="character border py-4 px-1 bg-white flex items-center justify-center li-${idx} ${chooseCss}">${num}</li>`;
+        return `<td class="character border items-center justify-center li-${idx} ${chooseCss}">${num}</td>`;
     }
 
     function getCell1(num) {
-        return `<li class="bg-purple-100 flex items-center justify-center li-0">${num}</li>`;
+        return `<td class="bg-purple-100 items-center justify-center li-0">${num}</td>`;
     }
 
     function getTitle() {
-        var $this = $('#ul-data');
+        var $thisTable = $('.t').find('tbody');
+        $thisTable.append(`<tr></tr>`);
+        var $this = $thisTable.find('tr');
+        $this.append(`<td class="bg-purple-100 items-center justify-center li-0">期数</td>`);
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
@@ -174,7 +214,7 @@
         }
     }
 
-    function getRow(item) {
+    function getRow($this, item) {
         var data = [];
         for (let i = 1; i < 8; i++) {
             if (i < 6) {
@@ -183,7 +223,7 @@
                 data.push(item['sufNum' + (i - 5)]);
             }
         }
-        var $this = $('#ul-data');
+        // var $this = $('#ul-data');
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
@@ -198,16 +238,18 @@
     $(function () {
         getTitle();
         $.each(data || [], function (index, item) {
-            var $this = $('#ul-data');
+            var $this = $('.t').find('tbody');
+            $this.append(`<tr id="tr-${index}"></tr>`);
+            $this = $('#tr-' + index)
             $this.append(getCell1(item.numPeriods));
-            getRow(item);
+            getRow($this, item);
         })
     })
 
     function line() {
         var preId, preVal, pre, flag = false, value = [];
 
-        $.each($('li span'), function (index, item) {
+        $.each($('td span'), function (index, item) {
             var val = $(item).attr('id');
             var v1 = val.split('-')[0];
             var v2 = val.split('-')[1];

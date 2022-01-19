@@ -12,7 +12,7 @@
             $(this).attr({
                 group: "gpr",
                 left: parseInt($(this).position().left + $(this).outerWidth()),
-                top: $(this).position().top + $(this).outerHeight()-$(this).outerHeight()*1/5,
+                top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight() * 1 / 5,
                 sel: "0",
                 check: "0"
             });
@@ -20,8 +20,10 @@
         part1.each(function (index, element) {
             $(this).attr({
                 group: "gpl",
-                left: parseInt($(this).position().left + $(this).outerWidth() - $(this).outerWidth() * 1 / 3),
-                top: $(this).position().top,
+                left: parseInt($(this).position().left + $(this).outerWidth()/2),
+                top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight() /2,
+                // left: parseInt($(this).position().left + $(this).outerWidth() - $(this).outerWidth() * 1 / 3),
+                // top: $(this).position().top,
                 sel: "0",
                 check: "0"
             });
@@ -29,9 +31,10 @@
         part1.attr('first', 0);//初始赋值 列表内容容器
         part2.attr('first', 0);
         //canvas 赋值
-        var canvas = box.find(".canvas")[0];  //获取canvas  实际连线标签
-        canvas.width = box.find(".table").width();//canvas宽度等于div容器宽度
-        canvas.height = box.find(".table").height();
+        // var canvas = box.find(".canvas")[0];  //获取canvas  实际连线标签
+        var canvas = $("#lineCanvas")[0];  //获取canvas  实际连线标签
+        canvas.width = box.find(".t").width();//canvas宽度等于div容器宽度
+        canvas.height = box.find(".t").height();
         //连线数据
         var mx = [];//连线坐标
         var my = [];
