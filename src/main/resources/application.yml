@@ -32,7 +32,7 @@ server:
 # 日志配置
 logging:
   level:
-    com.uustop: debug
+    com.cj: debug
     org.springframework: WARN
     org.spring.springboot.dao: debug
 # Spring配置
@@ -40,7 +40,7 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-    default-property-inclusion: non_null
+#    default-property-inclusion: non_null
   datasource:
     #1.JDBC
     type: com.alibaba.druid.pool.DruidDataSource
@@ -89,3 +89,12 @@ spring:
         login-password: admin
         allow: 127.0.0.1
         #deny: 192.168.1.100
+
+# MyBatis
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: com.cj.cptrend
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath:mybatis/**/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml

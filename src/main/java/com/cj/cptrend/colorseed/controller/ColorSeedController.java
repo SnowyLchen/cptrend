@@ -30,6 +30,11 @@ public class ColorSeedController {
         return PREFIX + "colorseed";
     }
 
+    @RequestMapping("/select")
+    public String select(ModelMap modelMap) {
+        return "cp/fixed/selectfixed";
+    }
+
 
     @RequestMapping("/getData")
     @ResponseBody
