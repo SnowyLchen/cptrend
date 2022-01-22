@@ -2,13 +2,13 @@
 .cd-dropdown,
 .cd-select {
 	position: relative;
-	width: 150px;
+	width: 80px;
 	margin: 20px auto;
 	display: block;
 }
 
 .cd-dropdown > span {
-	width: 100%;
+	width: 50%;
 	height: 20px;
 	line-height: 20px;
 	color: #999;
@@ -16,28 +16,28 @@
 	font-size: 16px;
 	background: #fff;
 	display: block;
-	padding: 0 50px 0 30px;
+	padding: 0 50px 0 15px;
 	position: relative;
 	cursor: pointer;
 }
 
-.cd-dropdown > span:after {
-	content: '\25BC';
-	position: absolute;
-	right: 0px;
-	top: 15%;
-	width: 50px;
-	text-align: center;
-	font-size: 12px;
-	padding: 10px;
-	height: 70%;
-	line-height: 0px;
-	border-left: 1px solid #ddd;
-}
+/*.cd-dropdown > span:after {*/
+/*	content: '\25BC';*/
+/*	position: absolute;*/
+/*	right: 0px;*/
+/*	top: 15%;*/
+/*	width: 50px;*/
+/*	text-align: center;*/
+/*	font-size: 12px;*/
+/*	!*padding: 10px;*!*/
+/*	height: 70%;*/
+/*	line-height: 10px;*/
+/*	border-left: 1px solid #ddd;*/
+/*}*/
 
-.cd-dropdown.cd-active > span:after {
-	content: '\25B2';
-}
+/*.cd-dropdown.cd-active > span:after {*/
+/*	content: '\25B2';*/
+/*}*/
 
 .cd-dropdown ul {
 	list-style-type: none;
@@ -55,11 +55,12 @@
 	width: 100%;
 	background: #fff;
 	line-height: 20px;
-	padding: 0 10px 0 30px;
+	padding: 0 10px 0 15px;
 	display: block;
 	color: #bcbcbc;
 	cursor: pointer;
 	font-weight: 700;
+	border-radius: 50px;
 }
 
 .cd-dropdown > span,
@@ -84,7 +85,7 @@
 }
 
 /* General Demo Style */
-@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+/*@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);*/
 
 *,
 *:after,
@@ -113,12 +114,13 @@
 
 body {
 	font-family: 'Lato', Calibri, Arial, sans-serif;
-	background: #f4f4f4 url(../images/grid_DominikKiss_SubtlePatterns.jpg);
+	/*background: #f4f4f4 url(../images/grid_DominikKiss_SubtlePatterns.jpg);*/
 	font-weight: 300;
 	font-size: 15px;
 	color: #333;
 	overflow: scroll;
 	overflow-x: hidden;
+	overflow-y: hidden;
 }
 
 a {
@@ -209,41 +211,6 @@ a {
 	float: left;
 	display: block;
 }
-
-/* Demo Buttons Style */
-.codrops-demos {
-	float: right;
-	padding-top: 10px;
-}
-
-.codrops-demos a {
-	display: inline-block;
-	margin: 10px;
-	color: #666;
-	font-weight: 700;
-	line-height: 30px;
-	border-bottom: 4px solid transparent;
-}
-
-.codrops-demos a:hover {
-	color: #000;
-	border-color: #000;
-}
-
-.codrops-demos a.current-demo,
-.codrops-demos a.current-demo:hover {
-	color: #aaa;
-	border-color: #aaa;
-}
-
-
-@media screen and (max-width: 730px){
-	.fleft {
-		width: 100%;
-		float: none;
-		text-align: center;
-	}
-} 
 
 .cd-dropdown ul {
 	position: absolute;
