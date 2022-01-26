@@ -17,7 +17,7 @@
     </resultMap>
 
     <sql id="LotteryColumns">
-        num_periods,pre_num1,pre_num2,pre_num3,pre_num4,pre_num5,suf_num1,suf_num2
+        num_periods,pre_num1,pre_num2,pre_num3,pre_num4,pre_num5,suf_num1,suf_num2,date
     </sql>
 
     <select id="selectLotteryByPrivateKey" resultMap="LotteryResult">
@@ -26,6 +26,13 @@
         FROM lottery
         WHERE num_periods
         = #{numPeriods}
+    </select>
+    <select id="selectLotteryByNew" resultMap="LotteryResult">
+        SELECT
+        <include refid="LotteryColumns"/>
+        FROM lottery
+        ORDER BY num_periods DESC
+        limit  1
     </select>
 
     <select id="selectLotteryList" resultMap="LotteryResult">
@@ -60,6 +67,7 @@
                 </if>
             </trim>
         </where>
+        ORDER BY num_periods DESC
     </select>
 
 </mapper>

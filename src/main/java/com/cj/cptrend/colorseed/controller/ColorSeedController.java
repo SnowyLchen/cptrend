@@ -25,9 +25,15 @@ public class ColorSeedController {
 
 
     @RequestMapping("/colorseed")
-    public String colorSeed(ModelMap modelMap) {
-        modelMap.put("cs", lotteryService.selectLotteryList(new Lottery()));
+    public String colorSeed(ModelMap modelMap, Lottery lottery) {
+        modelMap.put("cs", lotteryService.selectLotteryList(lottery));
         return PREFIX + "colorseed";
+    }
+
+    @RequestMapping("/getColorseedData")
+    @ResponseBody
+    public List<Lottery> getColorseedData(Lottery lottery) {
+        return lotteryService.selectLotteryList(lottery);
     }
 
     @RequestMapping("/select")

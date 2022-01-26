@@ -20,8 +20,8 @@
         part1.each(function (index, element) {
             $(this).attr({
                 group: "gpl",
-                left: parseInt($(this).position().left + $(this).outerWidth()/2),
-                top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight() /2,
+                left: parseInt($(this).position().left + $(this).outerWidth() / 2),
+                top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight() / 2,
                 // left: parseInt($(this).position().left + $(this).outerWidth() - $(this).outerWidth() * 1 / 3),
                 // top: $(this).position().top,
                 sel: "0",
@@ -44,49 +44,44 @@
         //canvas 追加2d画布
         var context = canvas.getContext('2d');  //canvas追加2d画图
         var lastX, lastY;//存放遍历坐标
-        window.strockline = function () {//绘制方法
+
+        window.strockline = function (lw, ls) {//绘制方法
             context.clearRect(0, 0, box.find(".table").width(), box.find(".table").height());//整个画布清除
             context.save();
             context.beginPath();
-            context.lineWidth = linewidth;
+            context.lineWidth = lw || linewidth;
             for (var i = 0; i < dataNum.length; i++) {  //遍历绘制
-                console.log(dataNum[i].moveX + '--move--' + dataNum[i].moveY)
+                // console.log(dataNum[i].moveX + '--move--' + dataNum[i].moveY)
                 context.moveTo(dataNum[i].moveX, dataNum[i].moveY);
                 context.lineTo(dataNum[i].toX, dataNum[i].toY);
-                console.log(dataNum[i].toX + '--to--' + dataNum[i].toY)
+                // console.log(dataNum[i].toX + '--to--' + dataNum[i].toY)
             }
-            context.strokeStyle = linestyle;
+            context.strokeStyle = ls || linestyle;
             context.stroke();
             context.restore();
         };
 
-        function clearline() {//清除
-            context.clearRect(0, 0, box.find(".show").width(), box.find(".show").height());
-            mx = [];//数据清除
-            my = [];
-            ms = [];
-            pairl = [];
-            pairr = [];
+        top.clearline = function () {//清除
+            dataNum = [];
+            context.clearRect(0, 0,0,0);//整个画布清除
             pair = 0;
-            part1.children("span").each(function (index, element) {
+            part1.each(function (index, element) {
                 $(this).removeClass("addstyle");
                 $(this).attr("sel", "0");
                 $(this).attr("check", "0");
-
             });
             part1.attr('first', 0);
-            part2.children("span").each(function (index, element) {
+            part2.each(function (index, element) {
                 $(this).removeClass("addstyle");
                 $(this).attr("sel", "0");
                 $(this).attr("check", "0");
             });
             part2.attr('first', 0);
+            context.stroke();
+            context.restore();
+            // window.strockline(1,'#FFF')
         };
 
-        //重置
-        box.find(".resetCanvasBtn").click(function () {
-            clearline();
-        });
 
         // //获取连线题对应的key-value
         // function getListPair() {
@@ -128,14 +123,5 @@
         //     alert(idAttr);
         // }
 
-        //生成连线题默认的答案
-        function newCanvas() {
-            if (regainCanvas == true) {
-                strockline();
-            }
-        };
-        // box.find(".getPair").click(function () {
-        //     getListPair();
-        // });
     }
 })(jQuery);

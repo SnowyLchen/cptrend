@@ -1,8 +1,11 @@
 package com.cj.cptrend.lottery.domain;
 
+import lombok.ToString;
+
 /**
  * @author chen
  */
+@ToString
 public class Lottery implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +50,16 @@ public class Lottery implements java.io.Serializable {
      */
     private String sufNum2;
     private String date;
+
+    private Integer currPageSize;
+
+    public Integer getCurrPageSize() {
+        return currPageSize;
+    }
+
+    public void setCurrPageSize(Integer currPageSize) {
+        this.currPageSize = currPageSize;
+    }
 
     public String getDate() {
         return date;

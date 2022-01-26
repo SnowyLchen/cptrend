@@ -179,16 +179,12 @@
 <script th:src="@{/js/table/vue.min.js}"></script>
 <script th:src="@{/js/table/script.js}"></script>
 <script th:inline="javascript">
-    // $('#fixed').load('select');
     var lineVal = [];
     if ($(window).width() > 1024) {
         AOS.init({
             duration: 600,
             easing: 'ease-out',
         });
-    }
-    function mychang () {
-
     }
     var data = [[${cs}]];
 
@@ -243,18 +239,21 @@
 
     $(function () {
         getTitle();
-        $.each(data || [], function (index, item) {
+        creatTable(data);
+    })
+
+    function creatTable(d) {
+        $.each(d || [], function (index, item) {
             var $this = $('.t').find('tbody');
             $this.append(`<tr id="tr-${index}"></tr>`);
             $this = $('#tr-' + index)
             $this.append(getCell1(item.numPeriods));
             getRow($this, item);
         })
-    })
+    }
 
     function line() {
         var preId, preVal, pre, flag = false, value = [];
-
         $.each($('td span'), function (index, item) {
             var val = $(item).attr('id');
             var v1 = val.split('-')[0];
@@ -280,11 +279,6 @@
             if (preVal === undefined || (preVal !== v1)) {
                 preVal = v2;
             }
-            // if (flag) {
-            // lineVal.push({
-            //     key: v1, value: value
-            // });
-            // }
         })
     }
 
@@ -375,6 +369,29 @@
         lineToNum(lineVal);
         strockline()
     });
+
+    top.refreshColor = function (currPageSize) {
+        var option = {
+            url: '/colorSeed/getColorseedData',
+            type: 'get',
+            data: {currPageSize: currPageSize},
+            success: function (res) {
+                lineVal = []
+                dataNum = []
+                window.strockline(2, '#FFF')
+                var $thisTable = $('.t').find('tbody');
+                $thisTable.empty()
+                getTitle();
+                creatTable(res);
+                debugger
+                line();
+                lineToNum(lineVal);
+                strockline()
+            }
+        };
+        $.ajax(option);
+    }
+
 </script>
 </body>
 </html>
