@@ -33,13 +33,10 @@
         color: #ccc;
     }
 
-    .cycle1 {
-        border-radius: 50%;
+    .cycle {
         height: 100%;
-        width: 60%;
-        display: inline-block;
-        background: #238ff9;
-        vertical-align: top;
+        width: 100%;
+        /*line-height: 34px;*/
     }
 
     .demo {
@@ -58,15 +55,24 @@
         position: relative;
         top: 0;
         left: 0;
-        margin: 40px 100px;
+        width: 100%;
+        table-layout: fixed;
+        /*margin: 40px 100px;*/
     }
 
     .t tr:first-child td:not(:first-child) {
-        background-color: rgba(192, 253, 255, 0.3)
+        background-color: rgba(192, 253, 255, 0.3);
+    }
+
+    .t tr td:first-child {
+        /*width: 45px;*/
     }
 
     .t td {
-        width: 34px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 20%;
         height: 34px;
         border: 1px solid #b3b3b3;
         align-items: center;
@@ -78,10 +84,15 @@
         background-color: rgba(128, 128, 128, 0.1);
     }
 
-    #lineCanvas {
+    #lineDiv {
         position: absolute;
-        top: 83px;
-        left: 80px;
+        /*top: calc(100% - 750px);*/
+        /*left: calc(100% - 1833px);*/
+        height: 100%;
+    }
+
+    .w-11\/12 {
+        width: 90% !important;
     }
 </style>
 <body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
@@ -155,13 +166,17 @@
     <div class="main-body" style="height: 100vh;">
         <div class="flex flex-col justify-center items-center bg-gray-100 py-5 demo" data-pair="3">
             <h1 class="text-xl font-bold uppercase my-3">表格</h1>
-            <canvas class=" w-11/12" width="480" height="430"
-                    id="lineCanvas">
-            </canvas>
-            <table class="t w-11/12 text-lg shadow-md border border-solid">
-                <tbody>
-                </tbody>
-            </table>
+            <div class=" w-11/12" id="lineDiv">
+                <canvas width="480" height="430"
+                        id="lineCanvas">
+                </canvas>
+            </div>
+            <div class=" w-11/12">
+                <table class="t text-lg shadow-md border border-solid">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
             <!--            <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">-->
             <!--                <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>-->
             <!--            </ul>-->
@@ -191,7 +206,7 @@
     function getLi(item, idx, num, choose, isTitle, isPos) {
         var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
         if (choose) {
-            return `<td class="character border  items-center justify-center li-${idx} ${chooseCss}"><span class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</span></td>`;
+            return `<td class="character border  items-center justify-center li-${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></td>`;
         }
         return `<td class="character border items-center justify-center li-${idx} ${chooseCss}">${num}</td>`;
     }
@@ -204,7 +219,7 @@
         var $thisTable = $('.t').find('tbody');
         $thisTable.append(`<tr></tr>`);
         var $this = $thisTable.find('tr');
-        $this.append(`<td class="bg-purple-100 items-center justify-center li-0">期数</td>`);
+        $this.append(`<td class="bg-purple-100 items-center justify-center li-0"><div id="headDiv">期数</div></td>`);
         for (let i = 1; i < 51; i++) {
             if (i >= 36) {
                 var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
@@ -250,11 +265,12 @@
             $this.append(getCell1(item.numPeriods));
             getRow($this, item);
         })
+        initRow($);
     }
 
     function line() {
         var preId, preVal, pre, flag = false, value = [];
-        $.each($('td span'), function (index, item) {
+        $.each($('td div'), function (index, item) {
             var val = $(item).attr('id');
             var v1 = val.split('-')[0];
             var v2 = val.split('-')[1];
@@ -289,6 +305,8 @@
 
 
 <script th:src="@{/js/line/online.js}"></script>
+<script th:src="@{/js/utils.js}"></script>
+
 <script>
     var dataNum = [];
 
@@ -334,7 +352,7 @@
                                                     // 值相减=1
                                                     var b1 = it3.v - it2.v;
                                                     if (Math.abs(b1) === 1) {
-                                                        a1 !== b1 && dataNum.push({
+                                                        a1 !== b1 && l1.key !== l3.key && dataNum.push({
                                                             moveX: it1.x,
                                                             moveY: it1.y,
                                                             toX: it3.x,
@@ -371,6 +389,7 @@
     });
 
     top.refreshColor = function (currPageSize) {
+        $.load.loading();
         var option = {
             url: '/colorSeed/getColorseedData',
             type: 'get',
@@ -383,15 +402,17 @@
                 $thisTable.empty()
                 getTitle();
                 creatTable(res);
-                debugger
+                var canvas = $("#lineCanvas")[0];
+                canvas.width = $(".t").width();
+                canvas.height = $(".t").height();
                 line();
                 lineToNum(lineVal);
-                strockline()
+                strockline();
+                $.load.removeLoading();
             }
         };
         $.ajax(option);
     }
-
 </script>
 </body>
 </html>

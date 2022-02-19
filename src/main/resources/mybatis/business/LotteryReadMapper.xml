@@ -68,6 +68,7 @@
             </trim>
         </where>
         ORDER BY num_periods DESC
+        LIMIT #{pageNum},#{pageSize}
     </select>
 
 </mapper>

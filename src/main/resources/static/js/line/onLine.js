@@ -1,35 +1,61 @@
+/***
+ * 获取div的坐标
+ * @param divObj
+ * @returns {{width: number, height: number, left: *, top: Window}}
+ */
+window.divCoordinate = function (divObj) {
+    if (typeof divObj == 'string') {
+        divObj = com.whuang.hsj.$$id('divObj');
+    }
+    return {
+        'width': divObj.offsetWidth, 'height': divObj.offsetHeight,
+        'x': divObj.offsetLeft, 'y': divObj.offsetTop,
+        // 'scrollLeft': this.getScroll().left, 'scrollTop': this.getScroll().top
+    };
+}
+
+function initRow($) {
+    var part1, part2;
+    var headTop = $('#headDiv').position().top;
+    var headLeft = $('#headDiv').position().left;
+    $("#lineDiv").css('top', headTop)
+    $("#lineDiv").css('left', headLeft)
+    part1 = $(".character.choose div[isEvenNum=true]");
+    part2 = $(".character.choose div[isEvenNum=false]");
+    //初始化赋值 列表内容
+    part2.each(function (index, element) {
+        $(this).attr({
+            group: "gpr",
+            // left: parseInt($(this).position().left + $(this).outerWidth()),
+            left: $(this).position().left,
+            // top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight(),
+            top: $(this).position().top,
+            sel: "0",
+            check: "0"
+        });
+    });
+    part1.each(function (index, element) {
+        $(this).attr({
+            group: "gpl",
+            // left: parseInt($(this).position().left + $(this).outerWidth() / 2),
+            left: $(this).position().left,
+            top: $(this).position().top,
+            // top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight(),
+            sel: "0",
+            check: "0"
+        });
+    });
+    part1.attr('first', 0);//初始赋值 列表内容容器
+    part2.attr('first', 0);
+    return {part1, part2};
+}
+
 (function ($) {
     $.fn.onLine = function (options) {
         var box = this;
         var regainCanvas = options.regainCanvas;
         var linewidth = 1, linestyle = "#0C6";//连线绘制--线宽，线色
-        var part1, part2;
-
-        part1 = $(".character.choose span[isEvenNum=true]");
-        part2 = $(".character.choose span[isEvenNum=false]");
-        //初始化赋值 列表内容
-        part2.each(function (index, element) {
-            $(this).attr({
-                group: "gpr",
-                left: parseInt($(this).position().left + $(this).outerWidth()),
-                top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight() * 1 / 5,
-                sel: "0",
-                check: "0"
-            });
-        });
-        part1.each(function (index, element) {
-            $(this).attr({
-                group: "gpl",
-                left: parseInt($(this).position().left + $(this).outerWidth() / 2),
-                top: $(this).position().top + $(this).outerHeight() - $(this).outerHeight() / 2,
-                // left: parseInt($(this).position().left + $(this).outerWidth() - $(this).outerWidth() * 1 / 3),
-                // top: $(this).position().top,
-                sel: "0",
-                check: "0"
-            });
-        });
-        part1.attr('first', 0);//初始赋值 列表内容容器
-        part2.attr('first', 0);
+        var {part1, part2} = initRow($);
         //canvas 赋值
         // var canvas = box.find(".canvas")[0];  //获取canvas  实际连线标签
         var canvas = $("#lineCanvas")[0];  //获取canvas  实际连线标签
@@ -51,10 +77,10 @@
             context.beginPath();
             context.lineWidth = lw || linewidth;
             for (var i = 0; i < dataNum.length; i++) {  //遍历绘制
-                // console.log(dataNum[i].moveX + '--move--' + dataNum[i].moveY)
+                console.log(dataNum[i].moveX + '--move--' + dataNum[i].moveY)
                 context.moveTo(dataNum[i].moveX, dataNum[i].moveY);
                 context.lineTo(dataNum[i].toX, dataNum[i].toY);
-                // console.log(dataNum[i].toX + '--to--' + dataNum[i].toY)
+                console.log(dataNum[i].toX + '--to--' + dataNum[i].toY)
             }
             context.strokeStyle = ls || linestyle;
             context.stroke();
@@ -63,7 +89,7 @@
 
         top.clearline = function () {//清除
             dataNum = [];
-            context.clearRect(0, 0,0,0);//整个画布清除
+            context.clearRect(0, 0, 0, 0);//整个画布清除
             pair = 0;
             part1.each(function (index, element) {
                 $(this).removeClass("addstyle");
@@ -124,4 +150,5 @@
         // }
 
     }
+
 })(jQuery);

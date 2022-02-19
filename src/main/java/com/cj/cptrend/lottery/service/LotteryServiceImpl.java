@@ -34,18 +34,19 @@ public class LotteryServiceImpl implements ILotteryService {
     @Override
     public List<Lottery> selectLotteryList(Lottery lottery) {
         updateNum();
-        List<Lottery> lotteries = mLotteryReadMapper.selectLotteryList(lottery);
-        List<Lottery> lts = new ArrayList<>();
         for (PageSizeConstant value : PageSizeConstant.values()) {
             if (value.getKey().equals(lottery.getCurrPageSize())) {
-                lts = lotteries.subList(value.getKey(), value.getEnd());
+                lottery.setPageNum(value.getStart());
+                lottery.setPageSize(value.getEnd());
                 break;
             } else if (lottery.getCurrPageSize() == null) {
-                lts = lotteries.subList(0, 20);
+                lottery.setPageNum(0);
+                lottery.setPageSize(20);
                 break;
             }
         }
-        return lts.stream().sorted(Comparator.comparing(Lottery::getNumPeriods, Comparator.reverseOrder())).collect(Collectors.toList());
+        List<Lottery> lotteries = mLotteryReadMapper.selectLotteryList(lottery);
+        return lotteries.stream().sorted(Comparator.comparing(Lottery::getNumPeriods, Comparator.reverseOrder())).collect(Collectors.toList());
     }
 
     private void updateNum() {

@@ -1,12 +1,13 @@
 package com.cj.cptrend.lottery.domain;
 
+import com.cj.cptrend.colorseed.domain.PageFilter;
 import lombok.ToString;
 
 /**
  * @author chen
  */
 @ToString
-public class Lottery implements java.io.Serializable {
+public class Lottery extends PageFilter implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 

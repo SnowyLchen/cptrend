@@ -3,7 +3,7 @@ package com.cj.cptrend.colorseed.domain;
 import lombok.Data;
 
 @Data
-public class ColorSeed {
+public class ColorSeed extends PageFilter {
 
     private Integer numPeriods;
 

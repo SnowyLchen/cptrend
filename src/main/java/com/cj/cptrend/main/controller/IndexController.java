@@ -12,4 +12,12 @@ public class IndexController {
     public String index() {
         return PREFIX + "index";
     }
+
+
+    @RequestMapping("/loading")
+    public String loading() {
+        return "cp/loading/loading";
+    }
+
+
 }
