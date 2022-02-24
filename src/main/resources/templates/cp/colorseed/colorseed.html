@@ -19,6 +19,7 @@
     <link th:href="@{/css/table/tailwind.min.css}" rel="stylesheet">
     <link th:href="@{/css/table/style.css}" rel="stylesheet">
     <link th:href="@{/css/online/onLine.css}" rel="stylesheet">
+    <link th:href="@{/css/layui.css}" rel="stylesheet">
     <!--    <link href="http://www.htmlsucai.com/favicon.ico" rel="shortcut icon">-->
     <!--    <link href="http://www.htmlsucai.com/demo/2018/favicon.ico" *tpa="http://r060.mobanvip.com/favicon.ico*/"-->
     <!--          rel="shortcut icon">-->
@@ -172,7 +173,9 @@
                 </canvas>
             </div>
             <div class=" w-11/12">
-                <table class="t text-lg shadow-md border border-solid">
+                <table class="t text-lg shadow-md border border-solid" lay-filter="colorTable">
+                    <thead>
+                    </thead>
                     <tbody>
                     </tbody>
                 </table>
@@ -185,234 +188,268 @@
         </div>
     </div>
 </section>
+<div class="layui-btn-group demoTable" style="margin-bottom: 10px;">
+    <button class="layui-btn" data-type="parseTable">立即转化为数据表格</button>
+</div>
 <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
-
+<script th:src="@{/js/layui.js}"></script>
 <script th:src="@{/js/aos.js}"></script>
 <script th:src="@{/js/swiper.js}"></script>
 <script th:src="@{/js/xlx.shuwon.js}" id="JS" page="home"></script>
 <!--table-->
 <script th:src="@{/js/table/vue.min.js}"></script>
 <script th:src="@{/js/table/script.js}"></script>
-<script th:inline="javascript">
-    var lineVal = [];
-    if ($(window).width() > 1024) {
-        AOS.init({
-            duration: 600,
-            easing: 'ease-out',
-        });
-    }
-    var data = [[${cs}]];
+<!--<script th:inline="javascript">-->
+<!--    var lineVal = [];-->
+<!--    if ($(window).width() > 1024) {-->
+<!--        AOS.init({-->
+<!--            duration: 600,-->
+<!--            easing: 'ease-out',-->
+<!--        });-->
+<!--    }-->
+<!--    var data = [[${cs}]];-->
 
-    function getLi(item, idx, num, choose, isTitle, isPos) {
-        var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
-        if (choose) {
-            return `<td class="character border  items-center justify-center li-${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></td>`;
-        }
-        return `<td class="character border items-center justify-center li-${idx} ${chooseCss}">${num}</td>`;
-    }
+<!--    function getLi(item, idx, num, choose, isTitle, isPos) {-->
+<!--        var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';-->
+<!--        if (choose) {-->
+<!--            return `<td class="character border  items-center justify-center li-${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></td>`;-->
+<!--        }-->
+<!--        return `<td class="character border items-center justify-center li-${idx} ${chooseCss}">${num}</td>`;-->
+<!--    }-->
 
-    function getCell1(num) {
-        return `<td class="bg-purple-100 items-center justify-center li-0">${num}</td>`;
-    }
+<!--    function getTitleLi(item, idx, num, choose, isTitle, isPos) {-->
+<!--        var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';-->
+<!--        if (choose) {-->
+<!--            return `<th lay-data="{field:'preNum', width:200}" class="character border  items-center justify-center li-${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></th>`;-->
+<!--        }-->
+<!--        return `<th lay-data="{field:'preNum${idx}', width:34}" class="character border items-center justify-center li-${idx} ${chooseCss}">${num}</th>`;-->
+<!--    }-->
 
-    function getTitle() {
-        var $thisTable = $('.t').find('tbody');
-        $thisTable.append(`<tr></tr>`);
-        var $this = $thisTable.find('tr');
-        $this.append(`<td class="bg-purple-100 items-center justify-center li-0"><div id="headDiv">期数</div></td>`);
-        for (let i = 1; i < 51; i++) {
-            if (i >= 36) {
-                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
-                $this.append(getLi(null, i - 35, it, undefined, true, 1));
-            } else {
-                var it2 = i < 10 ? ('0' + i) : i;
-                $this.append(getLi(null, i, it2, undefined, true, 0));
-            }
-        }
-    }
+<!--    function getCell1(num) {-->
+<!--        return `<td class="bg-purple-100 items-center justify-center li-0">${num}</td>`;-->
+<!--    }-->
 
-    function getRow($this, item) {
-        var data = [];
-        for (let i = 1; i < 8; i++) {
-            if (i < 6) {
-                data.push(item['preNum' + i]);
-            } else {
-                data.push(item['sufNum' + (i - 5)]);
-            }
-        }
-        // var $this = $('#ul-data');
-        for (let i = 1; i < 51; i++) {
-            if (i >= 36) {
-                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);
-                $this.append(getLi(item, i - 35, it, data.slice(5, data.length).includes(it + ''), undefined, 1));
-            } else {
-                var it2 = i < 10 ? ('0' + i) : i;
-                $this.append(getLi(item, i, it2, data.slice(0, 5).includes('' + it2), undefined, 0));
-            }
-        }
-    }
+<!--    function getTitle() {-->
+<!--        var $thisTable = $('.t').find('thead');-->
+<!--        $thisTable.append(`<tr></tr>`);-->
+<!--        var $this = $thisTable.find('tr');-->
+<!--        $this.append(`<th class="bg-purple-100 items-center justify-center li-0"><div id="headDiv">期数</div></th>`);-->
+<!--        for (let i = 1; i < 51; i++) {-->
+<!--            if (i >= 36) {-->
+<!--                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);-->
+<!--                $this.append(getTitleLi(null, i - 35, it, undefined, true, 1));-->
+<!--            } else {-->
+<!--                var it2 = i < 10 ? ('0' + i) : i;-->
+<!--                $this.append(getTitleLi(null, i, it2, undefined, true, 0));-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
 
-    $(function () {
-        getTitle();
-        creatTable(data);
-    })
+<!--    function getRow($this, item) {-->
+<!--        var data = [];-->
+<!--        for (let i = 1; i < 8; i++) {-->
+<!--            if (i < 6) {-->
+<!--                data.push(item['preNum' + i]);-->
+<!--            } else {-->
+<!--                data.push(item['sufNum' + (i - 5)]);-->
+<!--            }-->
+<!--        }-->
+<!--        // var $this = $('#ul-data');-->
+<!--        for (let i = 1; i < 51; i++) {-->
+<!--            if (i >= 36) {-->
+<!--                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);-->
+<!--                $this.append(getLi(item, i - 35, it, data.slice(5, data.length).includes(it + ''), undefined, 1));-->
+<!--            } else {-->
+<!--                var it2 = i < 10 ? ('0' + i) : i;-->
+<!--                $this.append(getLi(item, i, it2, data.slice(0, 5).includes('' + it2), undefined, 0));-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
 
-    function creatTable(d) {
-        $.each(d || [], function (index, item) {
-            var $this = $('.t').find('tbody');
-            $this.append(`<tr id="tr-${index}"></tr>`);
-            $this = $('#tr-' + index)
-            $this.append(getCell1(item.numPeriods));
-            getRow($this, item);
-        })
-        initRow($);
-    }
+<!--    $(function () {-->
+<!--        getTitle();-->
+<!--        creatTable(data);-->
+<!--    })-->
 
-    function line() {
-        var preId, preVal, pre, flag = false, value = [];
-        $.each($('td div'), function (index, item) {
-            var val = $(item).attr('id');
-            var v1 = val.split('-')[0];
-            var v2 = val.split('-')[1];
-            if (index === 0) {
-                lineVal.push({key: v1, value: []})
-            } else {
-                if (lineVal[lineVal.length - 1].key == v1) {
-                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});
-                    lineVal[lineVal.length - 1].value = value;
-                } else {
-                    value = []
-                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});
-                    lineVal.push({
-                        key: v1, value: value
-                    });
-                }
-            }
-            flag = abs(preId, v1) && abs(preVal, v2);
-            if (preId === undefined || (preId !== v1 && preId - v1 === 2)) {
-                preId = v1;
-            }
-            if (preVal === undefined || (preVal !== v1)) {
-                preVal = v2;
-            }
-        })
-    }
+<!--    function creatTable(d) {-->
+<!--        $.each(d || [], function (index, item) {-->
+<!--            var $this = $('.t').find('thead');-->
+<!--            $this.append(`<tr id="tr-${index}"></tr>`);-->
+<!--            $this = $('#tr-' + index)-->
+<!--            $this.append(getCell1(item.numPeriods));-->
+<!--            getRow($this, item);-->
+<!--        })-->
+<!--        initRow($);-->
+<!--    }-->
 
-    function abs(num1, num2) {
-        return Math.abs(num1 - num2) === 1
-    }
-</script>
+<!--    function line() {-->
+<!--        var preId, preVal, pre, flag = false, value = [];-->
+<!--        $.each($('td div'), function (index, item) {-->
+<!--            var val = $(item).attr('id');-->
+<!--            var v1 = val.split('-')[0];-->
+<!--            var v2 = val.split('-')[1];-->
+<!--            if (index === 0) {-->
+<!--                lineVal.push({key: v1, value: []})-->
+<!--            } else {-->
+<!--                if (lineVal[lineVal.length - 1].key == v1) {-->
+<!--                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});-->
+<!--                    lineVal[lineVal.length - 1].value = value;-->
+<!--                } else {-->
+<!--                    value = []-->
+<!--                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});-->
+<!--                    lineVal.push({-->
+<!--                        key: v1, value: value-->
+<!--                    });-->
+<!--                }-->
+<!--            }-->
+<!--            flag = abs(preId, v1) && abs(preVal, v2);-->
+<!--            if (preId === undefined || (preId !== v1 && preId - v1 === 2)) {-->
+<!--                preId = v1;-->
+<!--            }-->
+<!--            if (preVal === undefined || (preVal !== v1)) {-->
+<!--                preVal = v2;-->
+<!--            }-->
+<!--        })-->
+<!--    }-->
+
+<!--    function abs(num1, num2) {-->
+<!--        return Math.abs(num1 - num2) === 1-->
+<!--    }-->
+<!--</script>-->
 
 
-<script th:src="@{/js/line/online.js}"></script>
-<script th:src="@{/js/utils.js}"></script>
+<!--<script th:src="@{/js/line/online.js}"></script>-->
+<!--<script th:src="@{/js/utils.js}"></script>-->
+
+<!--<script>-->
+<!--    var dataNum = [];-->
+
+<!--    function lineToNum(values, loop) {-->
+<!--        // 2个连线-->
+<!--        // for (let i = 0; i < lineVal.length; i++) {-->
+<!--        //     var l1 = lineVal[i];-->
+<!--        //     for (let j = 1; j < lineVal.length; j++) {-->
+<!--        //         var l2 = lineVal[j];-->
+<!--        //         if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 2) {-->
+<!--        //             l1.value.forEach(it1 => {-->
+<!--        //                 l2.value.forEach(it2 => {-->
+<!--        //                     if (it1.pos === it2.pos) {-->
+<!--        //                         if (Math.abs(it1.v - it2.v) === 1) {-->
+<!--        //                             dataNum.push({moveX: it1.x, moveY: it1.y, toX: it2.x, toY: it2.y});-->
+<!--        //                         }-->
+<!--        //                     }-->
+<!--        //                 });-->
+<!--        //             });-->
+<!--        //             break-->
+<!--        //         }-->
+<!--        //     }-->
+<!--        // }-->
+<!--        // 3个连线-->
+<!--        for (let i = 0; i < lineVal.length; i++) {-->
+<!--            var l1 = lineVal[i];-->
+<!--            for (let j = 1; j < lineVal.length; j++) {-->
+<!--                var l2 = lineVal[j];-->
+<!--                // key 相减=1-->
+<!--                if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 1) {-->
+<!--                    l1.value.forEach(it1 => {-->
+<!--                        l2.value.forEach(it2 => {-->
+<!--                            if (it1.pos === it2.pos) {-->
+<!--                                // 值相减=1-->
+<!--                                var a1 = it1.v - it2.v;-->
+<!--                                if (Math.abs(a1) === 1) {-->
+<!--                                    for (let k = 1; k < lineVal.length; k++) {-->
+<!--                                        var l3 = lineVal[k];-->
+<!--                                        // key 相减=1-->
+<!--                                        if (Math.abs(parseInt(l2.key) - parseInt(l3.key)) === 1) {-->
+<!--                                            l3.value.forEach(it3 => {-->
+<!--                                                if (it3.pos === it2.pos) {-->
+<!--                                                    // 值相减=1-->
+<!--                                                    var b1 = it3.v - it2.v;-->
+<!--                                                    if (Math.abs(b1) === 1) {-->
+<!--                                                        a1 !== b1 && l1.key !== l3.key && dataNum.push({-->
+<!--                                                            moveX: it1.x,-->
+<!--                                                            moveY: it1.y,-->
+<!--                                                            toX: it3.x,-->
+<!--                                                            toY: it3.y-->
+<!--                                                        });-->
+<!--                                                    }-->
+<!--                                                }-->
+<!--                                            });-->
+<!--                                            break-->
+<!--                                        }-->
+<!--                                    }-->
+<!--                                }-->
+<!--                            }-->
+<!--                        });-->
+<!--                    });-->
+<!--                    break-->
+<!--                }-->
+<!--            }-->
+<!--        }-->
+<!--        console.log(dataNum)-->
+<!--    }-->
+
+<!--    $(function () {-->
+<!--        var obj = $(".demo");-->
+<!--        var size = obj.size();-->
+<!--        for (var i = 0; i < size; i++) {-->
+<!--            obj.eq(i).onLine({-->
+<!--                regainCanvas: true-->
+<!--            });-->
+<!--        }-->
+<!--        line();-->
+<!--        lineToNum(lineVal);-->
+<!--        strockline()-->
+<!--    });-->
+
+<!--    top.refreshColor = function (currPageSize) {-->
+<!--        $.load.loading();-->
+<!--        var option = {-->
+<!--            url: '/colorSeed/getColorseedData',-->
+<!--            type: 'get',-->
+<!--            data: {currPageSize: currPageSize},-->
+<!--            success: function (res) {-->
+<!--                lineVal = []-->
+<!--                dataNum = []-->
+<!--                window.strockline(2, '#FFF')-->
+<!--                var $thisTable = $('.t').find('tbody');-->
+<!--                $thisTable.empty()-->
+<!--                getTitle();-->
+<!--                creatTable(res);-->
+<!--                var canvas = $("#lineCanvas")[0];-->
+<!--                canvas.width = $(".t").width();-->
+<!--                canvas.height = $(".t").height();-->
+<!--                line();-->
+<!--                lineToNum(lineVal);-->
+<!--                strockline();-->
+<!--                $.load.removeLoading();-->
+<!--            }-->
+<!--        };-->
+<!--        $.ajax(option);-->
+<!--    }-->
+<!--</script>-->
+
 
 <script>
-    var dataNum = [];
-
-    function lineToNum(values, loop) {
-        // 2个连线
-        // for (let i = 0; i < lineVal.length; i++) {
-        //     var l1 = lineVal[i];
-        //     for (let j = 1; j < lineVal.length; j++) {
-        //         var l2 = lineVal[j];
-        //         if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 2) {
-        //             l1.value.forEach(it1 => {
-        //                 l2.value.forEach(it2 => {
-        //                     if (it1.pos === it2.pos) {
-        //                         if (Math.abs(it1.v - it2.v) === 1) {
-        //                             dataNum.push({moveX: it1.x, moveY: it1.y, toX: it2.x, toY: it2.y});
-        //                         }
-        //                     }
-        //                 });
-        //             });
-        //             break
-        //         }
-        //     }
-        // }
-        // 3个连线
-        for (let i = 0; i < lineVal.length; i++) {
-            var l1 = lineVal[i];
-            for (let j = 1; j < lineVal.length; j++) {
-                var l2 = lineVal[j];
-                // key 相减=1
-                if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 1) {
-                    l1.value.forEach(it1 => {
-                        l2.value.forEach(it2 => {
-                            if (it1.pos === it2.pos) {
-                                // 值相减=1
-                                var a1 = it1.v - it2.v;
-                                if (Math.abs(a1) === 1) {
-                                    for (let k = 1; k < lineVal.length; k++) {
-                                        var l3 = lineVal[k];
-                                        // key 相减=1
-                                        if (Math.abs(parseInt(l2.key) - parseInt(l3.key)) === 1) {
-                                            l3.value.forEach(it3 => {
-                                                if (it3.pos === it2.pos) {
-                                                    // 值相减=1
-                                                    var b1 = it3.v - it2.v;
-                                                    if (Math.abs(b1) === 1) {
-                                                        a1 !== b1 && l1.key !== l3.key && dataNum.push({
-                                                            moveX: it1.x,
-                                                            moveY: it1.y,
-                                                            toX: it3.x,
-                                                            toY: it3.y
-                                                        });
-                                                    }
-                                                }
-                                            });
-                                            break
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    });
-                    break
-                }
+    layui.use('table', function () {
+        var table = layui.table;
+        var tableCols = [];
+        for (let i = 0; i < 51; i++) {
+            if (i === 0) {
+                tableCols.push({field: 'id', width: 34, title: '期数', sort: true});
+            } else if (i < 36) {
+                tableCols.push({field: 'id' + i, width: 34, title: i});
+            } else if (i >= 36) {
+                tableCols.push({field: 'id' + (i - 35), width: 34, title: (i - 35)});
             }
         }
-        console.log(dataNum)
-    }
-
-    $(function () {
-        var obj = $(".demo");
-        var size = obj.size();
-        for (var i = 0; i < size; i++) {
-            obj.eq(i).onLine({
-                regainCanvas: true
-            });
-        }
-        line();
-        lineToNum(lineVal);
-        strockline()
+        table.render({
+            elem: '#colorTable'
+            , url: '/colorSeed/getColorDataTable'
+            , cellMinWidth: 34 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: [tableCols]
+        });
     });
-
-    top.refreshColor = function (currPageSize) {
-        $.load.loading();
-        var option = {
-            url: '/colorSeed/getColorseedData',
-            type: 'get',
-            data: {currPageSize: currPageSize},
-            success: function (res) {
-                lineVal = []
-                dataNum = []
-                window.strockline(2, '#FFF')
-                var $thisTable = $('.t').find('tbody');
-                $thisTable.empty()
-                getTitle();
-                creatTable(res);
-                var canvas = $("#lineCanvas")[0];
-                canvas.width = $(".t").width();
-                canvas.height = $(".t").height();
-                line();
-                lineToNum(lineVal);
-                strockline();
-                $.load.removeLoading();
-            }
-        };
-        $.ajax(option);
-    }
 </script>
 </body>
 </html>

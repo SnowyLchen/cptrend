@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.cj.cptrend.lottery.domain.Lottery;
 import com.cj.cptrend.lottery.service.ILotteryService;
 import com.cj.cptrend.utils.HttpUtils;
+import com.cj.cptrend.utils.controller.AjaxResult;
+import com.cj.cptrend.utils.controller.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/colorSeed")
-public class ColorSeedController {
+public class ColorSeedController extends BaseController {
 
     private static final String PREFIX = "cp/colorseed/";
 
@@ -28,6 +30,11 @@ public class ColorSeedController {
     public String colorSeed(ModelMap modelMap, Lottery lottery) {
         modelMap.put("cs", lotteryService.selectLotteryList(lottery));
         return PREFIX + "colorseed";
+    }
+
+    @RequestMapping("/getColorDataTable")
+    public AjaxResult getColorDataTable(Lottery lottery) {
+        return AjaxResult.success(lotteryService.selectLotteryList(lottery));
     }
 
     @RequestMapping("/getColorseedData")
