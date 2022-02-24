@@ -9,6 +9,7 @@ import com.cj.cptrend.utils.controller.AjaxResult;
 import com.cj.cptrend.utils.controller.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,7 +33,14 @@ public class ColorSeedController extends BaseController {
         return PREFIX + "colorseed";
     }
 
-    @RequestMapping("/getColorDataTable")
+    @RequestMapping("/colorseed2")
+    public String colorSeed2(ModelMap modelMap, Lottery lottery) {
+//        modelMap.put("cs", lotteryService.selectLotteryList(lottery));
+        return PREFIX + "colorseed1";
+    }
+
+    @GetMapping("/getColorDataTable")
+    @ResponseBody
     public AjaxResult getColorDataTable(Lottery lottery) {
         return AjaxResult.success(lotteryService.selectLotteryList(lottery));
     }

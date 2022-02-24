@@ -46,7 +46,7 @@ public class LotteryServiceImpl implements ILotteryService {
             }
         }
         List<Lottery> lotteries = mLotteryReadMapper.selectLotteryList(lottery);
-        return lotteries.stream().sorted(Comparator.comparing(Lottery::getNumPeriods, Comparator.reverseOrder())).collect(Collectors.toList());
+        return lotteries.stream().sorted(Comparator.comparing(Lottery::getNumPeriods)).collect(Collectors.toList());
     }
 
     private void updateNum() {

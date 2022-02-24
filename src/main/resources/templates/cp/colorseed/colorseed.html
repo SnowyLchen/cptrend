@@ -19,7 +19,6 @@
     <link th:href="@{/css/table/tailwind.min.css}" rel="stylesheet">
     <link th:href="@{/css/table/style.css}" rel="stylesheet">
     <link th:href="@{/css/online/onLine.css}" rel="stylesheet">
-    <link th:href="@{/css/layui.css}" rel="stylesheet">
     <!--    <link href="http://www.htmlsucai.com/favicon.ico" rel="shortcut icon">-->
     <!--    <link href="http://www.htmlsucai.com/demo/2018/favicon.ico" *tpa="http://r060.mobanvip.com/favicon.ico*/"-->
     <!--          rel="shortcut icon">-->
@@ -37,18 +36,19 @@
     .cycle {
         height: 100%;
         width: 100%;
-        /*line-height: 34px;*/
+        line-height: 34px;
+    }
+
+    .lastRow {
+        width: 100%;
+        padding: 2px;
+        text-align: center;
+        color: #FFA500;
+        font-size: 14px;
     }
 
     .demo {
         position: relative;
-    }
-
-    .cavans {
-        /*position: absolute;*/
-        /*top: 86px;*/
-        /*z-index: 2;*/
-        /*left: 104px;*/
     }
 
     .t {
@@ -66,7 +66,7 @@
     }
 
     .t tr td:first-child {
-        /*width: 45px;*/
+        width: 45px;
     }
 
     .t td {
@@ -95,6 +95,27 @@
     .w-11\/12 {
         width: 90% !important;
     }
+
+
+    .part1_li_1 {
+        width: 230px !important;
+    }
+
+    .part2_li_1 {
+        border-left-color: #000 !important;
+        border-left-width: 2px !important;
+    }
+
+    .part2_li_7, .part2_li_14, .part2_li_21, .part2_li_28, .part2_li_35 {
+        border-right-color: #000 !important;
+        border-right-width: 2px !important;
+    }
+
+    .part3_li_6 {
+        border-right-color: #000 !important;
+        border-right-width: 2px !important;
+    }
+
 </style>
 <body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
 
@@ -166,290 +187,311 @@
             style="position:fixed;top: 100px;left:5px;z-index: 99"></iframe>
     <div class="main-body" style="height: 100vh;">
         <div class="flex flex-col justify-center items-center bg-gray-100 py-5 demo" data-pair="3">
-            <h1 class="text-xl font-bold uppercase my-3">表格</h1>
+            <h1 class="text-xl font-bold uppercase my-3">超级大乐透</h1>
             <div class=" w-11/12" id="lineDiv">
                 <canvas width="480" height="430"
                         id="lineCanvas">
                 </canvas>
             </div>
-            <div class=" w-11/12">
-                <table class="t text-lg shadow-md border border-solid" lay-filter="colorTable">
-                    <thead>
-                    </thead>
+            <div class=" w-11/12" id="oldDiv">
+                <table class="t text-lg shadow-md border border-solid" id="colorTable">
                     <tbody>
                     </tbody>
                 </table>
             </div>
-            <!--            <ul class="table grid w-11/12 text-lg shadow-md border border-solid bg-white" id="ul-data">-->
-            <!--                <li class="bg-purple-100 flex items-center justify-center li-0">期数</li>-->
-            <!--            </ul>-->
-            <!-- -->
-            <!--            <canvas class="backcanvas cavans" width="480" height="430"></canvas>-->
         </div>
     </div>
 </section>
-<div class="layui-btn-group demoTable" style="margin-bottom: 10px;">
-    <button class="layui-btn" data-type="parseTable">立即转化为数据表格</button>
-</div>
 <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
-<script th:src="@{/js/layui.js}"></script>
+
 <script th:src="@{/js/aos.js}"></script>
 <script th:src="@{/js/swiper.js}"></script>
 <script th:src="@{/js/xlx.shuwon.js}" id="JS" page="home"></script>
 <!--table-->
 <script th:src="@{/js/table/vue.min.js}"></script>
 <script th:src="@{/js/table/script.js}"></script>
-<!--<script th:inline="javascript">-->
-<!--    var lineVal = [];-->
-<!--    if ($(window).width() > 1024) {-->
-<!--        AOS.init({-->
-<!--            duration: 600,-->
-<!--            easing: 'ease-out',-->
-<!--        });-->
-<!--    }-->
-<!--    var data = [[${cs}]];-->
+<script th:inline="javascript">
+    var lineVal = [];
+    if ($(window).width() > 1024) {
+        AOS.init({
+            duration: 600,
+            easing: 'ease-out',
+        });
+    }
+    var data = [[${cs}]];
 
-<!--    function getLi(item, idx, num, choose, isTitle, isPos) {-->
-<!--        var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';-->
-<!--        if (choose) {-->
-<!--            return `<td class="character border  items-center justify-center li-${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></td>`;-->
-<!--        }-->
-<!--        return `<td class="character border items-center justify-center li-${idx} ${chooseCss}">${num}</td>`;-->
-<!--    }-->
+    function getLi(item, idx, num, choose, isTitle, isPos, preOrsuf, colspan) {
+        // console.log(item)
+        var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
+        if (choose) {
+            return `<td isTitle = ${(!!isTitle)} class="character border items-center ${preOrsuf} justify-center ${preOrsuf}_li_${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></td>`;
+        }
+        return `<td isTitle = ${(!!isTitle)} class="character border ${preOrsuf} items-center justify-center ${preOrsuf}_li_${idx} ${chooseCss}" ${colspan ? ('colspan=' + colspan) : ''}>${colspan ? '开奖结果' : num}</td>`;
+    }
 
-<!--    function getTitleLi(item, idx, num, choose, isTitle, isPos) {-->
-<!--        var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';-->
-<!--        if (choose) {-->
-<!--            return `<th lay-data="{field:'preNum', width:200}" class="character border  items-center justify-center li-${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></th>`;-->
-<!--        }-->
-<!--        return `<th lay-data="{field:'preNum${idx}', width:34}" class="character border items-center justify-center li-${idx} ${chooseCss}">${num}</th>`;-->
-<!--    }-->
+    function getCell1(num) {
+        return `<td class="bg-purple-100 items-center justify-center li_0">${num}</td>`;
+    }
 
-<!--    function getCell1(num) {-->
-<!--        return `<td class="bg-purple-100 items-center justify-center li-0">${num}</td>`;-->
-<!--    }-->
-
-<!--    function getTitle() {-->
-<!--        var $thisTable = $('.t').find('thead');-->
-<!--        $thisTable.append(`<tr></tr>`);-->
-<!--        var $this = $thisTable.find('tr');-->
-<!--        $this.append(`<th class="bg-purple-100 items-center justify-center li-0"><div id="headDiv">期数</div></th>`);-->
-<!--        for (let i = 1; i < 51; i++) {-->
-<!--            if (i >= 36) {-->
-<!--                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);-->
-<!--                $this.append(getTitleLi(null, i - 35, it, undefined, true, 1));-->
-<!--            } else {-->
-<!--                var it2 = i < 10 ? ('0' + i) : i;-->
-<!--                $this.append(getTitleLi(null, i, it2, undefined, true, 0));-->
-<!--            }-->
-<!--        }-->
-<!--    }-->
-
-<!--    function getRow($this, item) {-->
-<!--        var data = [];-->
-<!--        for (let i = 1; i < 8; i++) {-->
-<!--            if (i < 6) {-->
-<!--                data.push(item['preNum' + i]);-->
-<!--            } else {-->
-<!--                data.push(item['sufNum' + (i - 5)]);-->
-<!--            }-->
-<!--        }-->
-<!--        // var $this = $('#ul-data');-->
-<!--        for (let i = 1; i < 51; i++) {-->
-<!--            if (i >= 36) {-->
-<!--                var it = (i - 35) < 10 ? ('0' + (i - 35)) : (i - 35);-->
-<!--                $this.append(getLi(item, i - 35, it, data.slice(5, data.length).includes(it + ''), undefined, 1));-->
-<!--            } else {-->
-<!--                var it2 = i < 10 ? ('0' + i) : i;-->
-<!--                $this.append(getLi(item, i, it2, data.slice(0, 5).includes('' + it2), undefined, 0));-->
-<!--            }-->
-<!--        }-->
-<!--    }-->
-
-<!--    $(function () {-->
-<!--        getTitle();-->
-<!--        creatTable(data);-->
-<!--    })-->
-
-<!--    function creatTable(d) {-->
-<!--        $.each(d || [], function (index, item) {-->
-<!--            var $this = $('.t').find('thead');-->
-<!--            $this.append(`<tr id="tr-${index}"></tr>`);-->
-<!--            $this = $('#tr-' + index)-->
-<!--            $this.append(getCell1(item.numPeriods));-->
-<!--            getRow($this, item);-->
-<!--        })-->
-<!--        initRow($);-->
-<!--    }-->
-
-<!--    function line() {-->
-<!--        var preId, preVal, pre, flag = false, value = [];-->
-<!--        $.each($('td div'), function (index, item) {-->
-<!--            var val = $(item).attr('id');-->
-<!--            var v1 = val.split('-')[0];-->
-<!--            var v2 = val.split('-')[1];-->
-<!--            if (index === 0) {-->
-<!--                lineVal.push({key: v1, value: []})-->
-<!--            } else {-->
-<!--                if (lineVal[lineVal.length - 1].key == v1) {-->
-<!--                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});-->
-<!--                    lineVal[lineVal.length - 1].value = value;-->
-<!--                } else {-->
-<!--                    value = []-->
-<!--                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});-->
-<!--                    lineVal.push({-->
-<!--                        key: v1, value: value-->
-<!--                    });-->
-<!--                }-->
-<!--            }-->
-<!--            flag = abs(preId, v1) && abs(preVal, v2);-->
-<!--            if (preId === undefined || (preId !== v1 && preId - v1 === 2)) {-->
-<!--                preId = v1;-->
-<!--            }-->
-<!--            if (preVal === undefined || (preVal !== v1)) {-->
-<!--                preVal = v2;-->
-<!--            }-->
-<!--        })-->
-<!--    }-->
-
-<!--    function abs(num1, num2) {-->
-<!--        return Math.abs(num1 - num2) === 1-->
-<!--    }-->
-<!--</script>-->
-
-
-<!--<script th:src="@{/js/line/online.js}"></script>-->
-<!--<script th:src="@{/js/utils.js}"></script>-->
-
-<!--<script>-->
-<!--    var dataNum = [];-->
-
-<!--    function lineToNum(values, loop) {-->
-<!--        // 2个连线-->
-<!--        // for (let i = 0; i < lineVal.length; i++) {-->
-<!--        //     var l1 = lineVal[i];-->
-<!--        //     for (let j = 1; j < lineVal.length; j++) {-->
-<!--        //         var l2 = lineVal[j];-->
-<!--        //         if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 2) {-->
-<!--        //             l1.value.forEach(it1 => {-->
-<!--        //                 l2.value.forEach(it2 => {-->
-<!--        //                     if (it1.pos === it2.pos) {-->
-<!--        //                         if (Math.abs(it1.v - it2.v) === 1) {-->
-<!--        //                             dataNum.push({moveX: it1.x, moveY: it1.y, toX: it2.x, toY: it2.y});-->
-<!--        //                         }-->
-<!--        //                     }-->
-<!--        //                 });-->
-<!--        //             });-->
-<!--        //             break-->
-<!--        //         }-->
-<!--        //     }-->
-<!--        // }-->
-<!--        // 3个连线-->
-<!--        for (let i = 0; i < lineVal.length; i++) {-->
-<!--            var l1 = lineVal[i];-->
-<!--            for (let j = 1; j < lineVal.length; j++) {-->
-<!--                var l2 = lineVal[j];-->
-<!--                // key 相减=1-->
-<!--                if (Math.abs(parseInt(l1.key) - parseInt(l2.key)) === 1) {-->
-<!--                    l1.value.forEach(it1 => {-->
-<!--                        l2.value.forEach(it2 => {-->
-<!--                            if (it1.pos === it2.pos) {-->
-<!--                                // 值相减=1-->
-<!--                                var a1 = it1.v - it2.v;-->
-<!--                                if (Math.abs(a1) === 1) {-->
-<!--                                    for (let k = 1; k < lineVal.length; k++) {-->
-<!--                                        var l3 = lineVal[k];-->
-<!--                                        // key 相减=1-->
-<!--                                        if (Math.abs(parseInt(l2.key) - parseInt(l3.key)) === 1) {-->
-<!--                                            l3.value.forEach(it3 => {-->
-<!--                                                if (it3.pos === it2.pos) {-->
-<!--                                                    // 值相减=1-->
-<!--                                                    var b1 = it3.v - it2.v;-->
-<!--                                                    if (Math.abs(b1) === 1) {-->
-<!--                                                        a1 !== b1 && l1.key !== l3.key && dataNum.push({-->
-<!--                                                            moveX: it1.x,-->
-<!--                                                            moveY: it1.y,-->
-<!--                                                            toX: it3.x,-->
-<!--                                                            toY: it3.y-->
-<!--                                                        });-->
-<!--                                                    }-->
-<!--                                                }-->
-<!--                                            });-->
-<!--                                            break-->
-<!--                                        }-->
-<!--                                    }-->
-<!--                                }-->
-<!--                            }-->
-<!--                        });-->
-<!--                    });-->
-<!--                    break-->
-<!--                }-->
-<!--            }-->
-<!--        }-->
-<!--        console.log(dataNum)-->
-<!--    }-->
-
-<!--    $(function () {-->
-<!--        var obj = $(".demo");-->
-<!--        var size = obj.size();-->
-<!--        for (var i = 0; i < size; i++) {-->
-<!--            obj.eq(i).onLine({-->
-<!--                regainCanvas: true-->
-<!--            });-->
-<!--        }-->
-<!--        line();-->
-<!--        lineToNum(lineVal);-->
-<!--        strockline()-->
-<!--    });-->
-
-<!--    top.refreshColor = function (currPageSize) {-->
-<!--        $.load.loading();-->
-<!--        var option = {-->
-<!--            url: '/colorSeed/getColorseedData',-->
-<!--            type: 'get',-->
-<!--            data: {currPageSize: currPageSize},-->
-<!--            success: function (res) {-->
-<!--                lineVal = []-->
-<!--                dataNum = []-->
-<!--                window.strockline(2, '#FFF')-->
-<!--                var $thisTable = $('.t').find('tbody');-->
-<!--                $thisTable.empty()-->
-<!--                getTitle();-->
-<!--                creatTable(res);-->
-<!--                var canvas = $("#lineCanvas")[0];-->
-<!--                canvas.width = $(".t").width();-->
-<!--                canvas.height = $(".t").height();-->
-<!--                line();-->
-<!--                lineToNum(lineVal);-->
-<!--                strockline();-->
-<!--                $.load.removeLoading();-->
-<!--            }-->
-<!--        };-->
-<!--        $.ajax(option);-->
-<!--    }-->
-<!--</script>-->
-
-
-<script>
-    layui.use('table', function () {
-        var table = layui.table;
-        var tableCols = [];
-        for (let i = 0; i < 51; i++) {
-            if (i === 0) {
-                tableCols.push({field: 'id', width: 34, title: '期数', sort: true});
-            } else if (i < 36) {
-                tableCols.push({field: 'id' + i, width: 34, title: i});
-            } else if (i >= 36) {
-                tableCols.push({field: 'id' + (i - 35), width: 34, title: (i - 35)});
+    function getTitle() {
+        var $thisTable = $('.t').find('tbody');
+        $thisTable.append(`<tr></tr>`);
+        var $this = $thisTable.find('tr');
+        $this.append(`<td class="bg-purple-100 items-center justify-center li_0"><div id="headDiv">期数</div></td>`);
+        for (let i = 1; i < 55; i++) {
+            if (i <= 7) {
+                var it1 = i < 10 ? ('0' + i) : i;
+                if (i == 1) {
+                    $this.append(getLi(null, i, it1, undefined, true, 0, 'part1', 7));
+                }
+            } else if (i > 7 && i <= 42) {
+                var it2 = (i - 7) < 10 ? ('0' + (i - 7)) : (i - 7);
+                $this.append(getLi(null, (i - 7), it2, undefined, true, 0, 'part2'));
+            } else {
+                var it = (i - 42) < 10 ? ('0' + (i - 42)) : (i - 42);
+                $this.append(getLi(null, i - 42, it, undefined, true, 1, 'part3'));
             }
         }
-        table.render({
-            elem: '#colorTable'
-            , url: '/colorSeed/getColorDataTable'
-            , cellMinWidth: 34 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-            , cols: [tableCols]
+    }
+
+    function getRow($this, item) {
+        var data = [];
+        for (let i = 1; i < 8; i++) {
+            if (i < 6) {
+                data.push(getInput(item['preNum' + i]));
+            } else {
+                data.push(getInput(item['sufNum' + (i - 5)]));
+            }
+        }
+        for (let i = 1; i < 55; i++) {
+            if (JSON.stringify(data).indexOf('input') > -1) {
+                $this.append(getLi(item, i, data[0], true, undefined, 0, 'part1'));
+            } else {
+                if (i <= 7) {
+                    var it1 = i < 6 ? 'preNum' + i : 'sufNum' + (i - 5);
+                    $this.append(getLi(item, i, item[it1], true, undefined, 0, 'part1'));
+                } else if (i > 7 && i <= 42) {
+                    var it2 = (i - 7) < 10 ? ('0' + (i - 7)) : (i - 7);
+                    $this.append(getLi(item, i - 7, it2, data.slice(0, 5).includes(it2 + ''), undefined, 1, 'part2'));
+                } else {
+                    var it3 = (i - 42) < 10 ? ('0' + (i - 42)) : (i - 42);
+                    $this.append(getLi(item, i - 42, it3, data.slice(5, data.length).includes(it3 + ''), undefined, 1, 'part3'));
+                }
+            }
+        }
+    }
+
+    function PrefixInteger(num, n) {
+        return (Array(n).join(0) + num).slice(-n);
+    }
+
+    function getInput(item) {
+        return item ? item : `<input type="text" maxlength="2" class="lastRow" onkeydown="PrefixInteger(this.value,2)"/>`
+    }
+
+
+    $(function () {
+        getTitle();
+        creatTable(data);
+    })
+
+    function creatTable(d) {
+        d.push({numPeriods: d[d.length - 1].numPeriods + 1})
+        $.each(d || [], function (index, item) {
+            var $this = $('.t').find('tbody');
+            $this.append(`<tr id="tr-${index}"></tr>`);
+            $this = $('#tr-' + index)
+            $this.append(getCell1(item.numPeriods));
+            getRow($this, item);
+        })
+        initRow($);
+    }
+
+    function line() {
+        var preId, preVal, pre, flag = false, value = [];
+        $.each($('td div'), function (index, item) {
+            var val = $(item).attr('id');
+            var v1 = val.split('-')[0];
+            var v2 = val.split('-')[1];
+            if (index === 0) {
+                lineVal.push({key: v1, value: []})
+            } else {
+                if (lineVal[lineVal.length - 1].key == v1) {
+                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});
+                    lineVal[lineVal.length - 1].value = value;
+                } else {
+                    value = []
+                    value.push({x: $(item).attr('left'), y: $(item).attr('top'), v: v2, pos: $(item).attr('pos')});
+                    lineVal.push({
+                        key: v1, value: value
+                    });
+                }
+            }
+            flag = abs(preId, v1) && abs(preVal, v2);
+            if (preId === undefined || (preId !== v1 && preId - v1 === 2)) {
+                preId = v1;
+            }
+            if (preVal === undefined || (preVal !== v1)) {
+                preVal = v2;
+            }
+        })
+    }
+
+    function abs(num1, num2) {
+        return Math.abs(num1 - num2) === 1
+    }
+</script>
+
+
+<script th:src="@{/js/line/online.js}"></script>
+<script th:src="@{/js/utils.js}"></script>
+
+<script>
+    var dataNum = [];
+
+    function lineToeach(rowData) {
+        for (let i = 0; i < rowData.length; i++) {
+            var l1 = rowData[i];
+            var l2 = rowData[i + 1];
+            var l3 = rowData[i + 2];
+            if (l1.length === 0) {
+                continue
+            }
+            if (l2 === undefined || l3 === undefined) {
+                break
+            }
+            for (let j = 0; j < l1.length; j++) {
+                $.each(l1[j], function (index1, item1) {
+                    for (let k = 0; k < l2.length; k++) {
+                        $.each(l2[k], function (index2, item2) {
+                            if (abs($(item1).text(), $(item2).text())) {
+                                for (let l = 0; l < l3.length; l++) {
+                                    $.each(l3[l], function (index3, item3) {
+                                        if (abs($(item2).text(), $(item3).text()) && $(item1).text() !== $(item3).text()) {
+                                            dataNum.push({
+                                                moveX: $(item1).attr('left'),
+                                                moveY: $(item1).attr('top'),
+                                                toX: $(item3).attr('left'),
+                                                toY: $(item3).attr('top')
+                                            });
+                                        }
+                                        return false;
+                                    });
+                                }
+                            }
+                            return false;
+                        });
+                    }
+                    return false;
+                });
+                // break
+            }
+        }
+    }
+
+    /**
+     * 设置多少期没出该列号码
+     */
+    function renderAppearNum(part) {
+        if (typeof part != 'string') {
+            return
+        }
+        var unclude = [], _part = [], cells = 0;
+        $('.' + part).each(function (index, element) {
+            if ($(element).attr('isTitle') == 'true') {
+                cells++;
+            }
+        })
+        var tableId = document.getElementById("colorTable");
+        var str = 1;
+        for (let j = 1; j <= cells; j++) {
+            for (var i = 1; i < tableId.rows.length; i++) {
+                var cell = tableId.rows[i].cells[j + 7];
+                if (!$(cell).is('.choose')) {
+                    $(cell).text(str < 10 ? ('0' + str) : str);
+                    str++;
+                } else {
+                    str = 1;
+                }
+            }
+            str = 1;
+        }
+    }
+
+    /**
+     * 分组获取连线坐标
+     */
+    function lineToNum() {
+        var rowData = {part1: [], part2: [], part3: []}, _p1 = [], _p2 = [], _p3 = [];
+        $("#colorTable").find('tr').each(function () {
+            if (parseInt($(this).text())) {
+                var part1 = [];
+                var part3 = [];
+                var part2 = [];
+                $(this).find('.choose div').each(function (index, item) {
+                    if (index < 7) {
+                        part1.push($(this));
+                        $(this).css('color', '#000');
+                    } else if (index > 11) {
+                        part3.push($(this));
+                        $(this).css('color', '#00BFFF');
+                    } else {
+                        part2.push($(this));
+                    }
+                });
+                _p1.push(part1);
+                _p3.push(part3);
+                _p2.push(part2);
+            }
         });
+        rowData.part1 = _p1;
+        rowData.part2 = _p2;
+        rowData.part3 = _p3;
+        // lineToeach(rowData.part1);
+        lineToeach(rowData.part2);
+        lineToeach(rowData.part3);
+        renderAppearNum('part2')
+    }
+
+    $(function () {
+        var obj = $(".demo");
+        var size = obj.size();
+        for (var i = 0; i < size; i++) {
+            obj.eq(i).onLine({
+                regainCanvas: true
+            });
+        }
+        line();
+        lineToNum();
+        // lineToNumNew(lineVal)
+        strockline()
     });
+
+    top.refreshColor = function (currPageSize) {
+        $.load.loading();
+        var option = {
+            url: '/colorSeed/getColorseedData',
+            type: 'get',
+            data: {currPageSize: currPageSize},
+            success: function (res) {
+                lineVal = []
+                dataNum = []
+                window.strockline(2, '#FFF')
+                var $thisTable = $('.t').find('tbody');
+                $thisTable.empty()
+                getTitle();
+                creatTable(res);
+                var canvas = $("#lineCanvas")[0];
+                canvas.width = $(".t").width();
+                canvas.height = $(".t").height();
+                line();
+                lineToNum();
+                strockline();
+                $.load.removeLoading();
+            }
+        };
+        $.ajax(option);
+    }
 </script>
 </body>
 </html>

@@ -3,23 +3,28 @@
  * @param divObj
  * @returns {{width: number, height: number, left: *, top: Window}}
  */
-window.divCoordinate = function (divObj) {
-    if (typeof divObj == 'string') {
-        divObj = com.whuang.hsj.$$id('divObj');
+function getObjRect(obj) {
+    if ('string' == typeof (obj)) {
+        obj = document.getElementById(obj);
     }
-    return {
-        'width': divObj.offsetWidth, 'height': divObj.offsetHeight,
-        'x': divObj.offsetLeft, 'y': divObj.offsetTop,
-        // 'scrollLeft': this.getScroll().left, 'scrollTop': this.getScroll().top
-    };
+    var ro = obj.getBoundingClientRect();
+    //document.documentElement.clientTop 在IE67中始终为2，其他高级点的浏览器为0
+    ro.top = ro.top - document.documentElement.clientTop;
+    //document.documentElement.clientLeft 在IE67中始终为2，其他高级点的浏览器为0
+    ro.left = ro.left - document.documentElement.clientLeft;
+    ro.Width = ro.width || ro.Right - ro.Left;
+    ro.Height = ro.height || ro.Bottom - ro.Top;
+    return ro
 }
 
 function initRow($) {
     var part1, part2;
     var headTop = $('#headDiv').position().top;
     var headLeft = $('#headDiv').position().left;
-    $("#lineDiv").css('top', headTop)
-    $("#lineDiv").css('left', headLeft)
+    var objRect = getObjRect("oldDiv");
+    console.log(objRect)
+    $("#lineDiv").css('top', objRect.y - 60)
+    $("#lineDiv").css('left', objRect.x + 16)
     part1 = $(".character.choose div[isEvenNum=true]");
     part2 = $(".character.choose div[isEvenNum=false]");
     //初始化赋值 列表内容
