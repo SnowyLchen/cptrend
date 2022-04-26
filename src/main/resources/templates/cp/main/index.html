@@ -3,7 +3,8 @@
       xmlns:th="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1, user-scalable=0"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
     <meta name="author" content="Website">
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -15,23 +16,35 @@
     <link th:href="@{/css/swiper-3.3.1.min.css}" rel="stylesheet">
     <link th:href="@{/css/aos.css}" rel="stylesheet">
     <link th:href="@{/css/xlx.shuwon.css}" rel="stylesheet">
-<!--    <link href="http://www.htmlsucai.com/favicon.ico" rel="shortcut icon">-->
-<!--    <link href="http://www.htmlsucai.com/demo/2018/favicon.ico" *tpa="http://r060.mobanvip.com/favicon.ico*/"-->
-<!--          rel="shortcut icon">-->
 </head>
 <style>
-    .home-body .main-body .boxs{ width: 1300px; }
-    .home-body .main-body .boxs li{ width: 50%; }
+    .home-body .main-body .boxs {
+        width: 90%;
+    }
+
+    .home-body .main-body .boxs li {
+        width: 50%;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .clearBoth .aos-init {
+            display: inline-block;
+            width: 30%;
+        }
+
+        .home-body .main-body .boxs li {
+            /*width: 25%;*/
+        }
+
+        .Tits img {
+            width: 25% !important;
+        }
+    }
 </style>
 <body aos-easing="ease-out" aos-duration="600" aos-delay="0" style="">
 
 <div class="zhidingUP"></div>
 <div class="zhiding"></div>
-
-<div id="mobileNav">
-    <ul>
-    </ul>
-</div>
 
 <div class="shade show">
     <div class="shade-top"></div>
@@ -42,18 +55,22 @@
 <section class="home-body BIGBOX">
     <div class="main">
         <div class="main-body">
-            <div class="Tits aos-init" aos-easing="ease-out-back" aos="zoom-out">
-                <img src="/image/products-tit.png">
+            <div class="Tits aos-init" aos-easing="ease-out-back" aos="zoom-out" aos-duration="500"
+                 style="margin-top: -4%;margin-bottom: 1%;">
+                <img src="/image/header_2.jpg" style="width: 15%;height: 15%;">
             </div>
             <ul class="boxs clearBoth">
                 <li class="p1 aos-init" aos-delay="0" aos="zoom-in-up">
                     <a href="/colorSeed/colorseed">
                         <div class="box-z">
-                            <div class="img-box"></div>
+                            <!--                            <div class="img-box"></div>-->
+                            <div class="img-box"
+                                 style="background-image: url(image/dlt.png);background-position: 50% 50%;background-size: 60% 100%;"></div>
                             <span>超级大乐透</span>
                         </div>
                         <div class="box-f">
-                            <div class="img-box" style="background-image: url(statics/images/1-1P40F20F00-L.png);"></div>
+                            <div class="img-box"
+                                 style="background-image: url(image/dlt.png);background-position: 50% 50%;background-size: 70% 110%;"></div>
                             <span>超级大乐透</span>
                         </div>
                     </a>
@@ -61,12 +78,13 @@
                 <li class="p2 aos-init" aos-delay="200" aos="zoom-in-up">
                     <a href="JavaScript:alert('开发中')">
                         <div class="box-z">
-                            <div class="img-box"></div>
+                            <div class="img-box"
+                                 style="background-image: url(image/p3_1.jpg);background-position: 50% 50%;background-size: 60% 100%;"></div>
                             <span>排列三</span>
                         </div>
                         <div class="box-f">
-                            <div class="img-box" style="background-image: url(/images/1-1P40F20U50-L.png
-);"></div>
+                            <div class="img-box"
+                                 style="background-image: url(image/p3_1.jpg);background-position: 50% 50%;background-size: 70% 110%;"></div>
                             <span>排列三</span>
                         </div>
                     </a>
@@ -74,12 +92,13 @@
                 <li class="p3 aos-init" aos-delay="0" aos="zoom-in-up">
                     <a href="JavaScript:alert('开发中')">
                         <div class="box-z">
-                            <div class="img-box"></div>
+                            <div class="img-box"
+                                 style="background-image: url(image/p5_1.jpg);background-position: 50% 50%;background-size: 60% 100%;"></div>
                             <span>排列五</span>
                         </div>
                         <div class="box-f">
-                            <div class="img-box" style="background-image: url(statics/images/1-1P40F211160-L.png
-);"></div>
+                            <div class="img-box"
+                                 style="background-image: url(image/p5_1.jpg);background-position: 50% 50%;background-size: 70% 110%;"></div>
                             <span>排列五</span>
                         </div>
                     </a>
@@ -87,12 +106,13 @@
                 <li class="p4 aos-init" aos-delay="200" aos="zoom-in-up">
                     <a href="JavaScript:alert('开发中')">
                         <div class="box-z">
-                            <div class="img-box"></div>
+                            <div class="img-box"
+                                 style="background-image: url(image/qxc.png);background-position: 50% 50%;background-size: 60% 100%;"></div>
                             <span>七星彩</span>
                         </div>
                         <div class="box-f">
-                            <div class="img-box" style="background-image: url(statics/images/1-1P40F213180-L.png
-);"></div>
+                            <div class="img-box"
+                                 style="background-image: url(image/qxc.png);background-position: 50% 50%;background-size: 70% 110%;"></div>
                             <span>七星彩</span>
                         </div>
                     </a>
@@ -102,10 +122,10 @@
     </div>
 </section>
 <footer>
-<!--    <img src="/image/footer-bg.png" alt="" class="img">-->
+    <!--    <img src="/image/footer-bg.png" alt="" class="img">-->
     <div class="footer-bottom">
         <ul>
-            <li>© 2021 snowylchen </li>
+            <li>© 2021 snowylchen</li>
             <li>
                 <a target="_blank" href="http://www.wangdahai.cn/">网站设计：snowylchen</a>
             </li>
@@ -113,15 +133,21 @@
         </ul>
     </div>
 </footer>
-<script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+<!--<script th:src="@{/js/jquery-1.10.2.min.js}"></script>-->
+<script th:src="@{/js/jquery-1.7.2.js}"></script>
 <script th:src="@{/js/aos.js}"></script>
-<script th:src="@{/js/swiper-3.3.1.jquery..js}"></script>
+<script th:src="@{/js/swiper.js}"></script>
 <script th:src="@{/js/xlx.shuwon.js}" id="JS" page="home"></script>
 <script type="text/javascript">
     if ($(window).width() > 1024) {
         AOS.init({
-            duration: 600,
-            easing: 'ease-out',
+            duration: 1000,
+            easing: 'ease',
+        });
+    } else {
+        AOS.init({
+            duration: 500,
+            easing: 'ease'
         });
     }
 </script>

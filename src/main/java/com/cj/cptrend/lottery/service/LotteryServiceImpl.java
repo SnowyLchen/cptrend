@@ -1,17 +1,18 @@
 package com.cj.cptrend.lottery.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cj.cptrend.lottery.domain.Lottery;
 import com.cj.cptrend.lottery.mapper.LotteryReadMapper;
 import com.cj.cptrend.lottery.mapper.LotteryWriteMapper;
+import com.cj.cptrend.utils.DateUtils;
 import com.cj.cptrend.utils.HttpUtils;
 import com.cj.cptrend.utils.constants.PageSizeConstant;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,8 +33,9 @@ public class LotteryServiceImpl implements ILotteryService {
     }
 
     @Override
-    public List<Lottery> selectLotteryList(Lottery lottery) {
-        updateNum();
+    public List<Lottery> selectLotteryList(Lottery lottery) throws ParseException {
+//        updateNum();
+        getNewData();
         for (PageSizeConstant value : PageSizeConstant.values()) {
             if (value.getKey().equals(lottery.getCurrPageSize())) {
                 lottery.setPageNum(value.getStart());
@@ -94,6 +96,47 @@ public class LotteryServiceImpl implements ILotteryService {
     @Override
     public int deleteLottery(int numPeriods) {
         return mLotteryWriteMapper.deleteLottery(numPeriods);
+    }
+
+    @Override
+    public int getNewData() throws ParseException {
+        Lottery lotteryLast = mLotteryReadMapper.selectLotteryByNew();
+        Calendar calendar = Calendar.getInstance();
+        if (lotteryLast == null || DateUtils.calcDateNums(lotteryLast.getDate(), DateUtils.getCurrentDate()) < 2) {
+            return 0;
+        }
+        String data = HttpUtils.doGet("https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry?gameNo=85&provinceId=0&pageSize=10000&isVerify=1&pageNo=1", null);
+        JSONObject jsonObject = JSON.parseObject(data);
+        String string = JSON.parseObject(jsonObject.getString("value")).getString("list");
+        List<JSONObject> jsonObjects = JSON.parseArray(string, JSONObject.class);
+        List<Lottery> lotteries = new ArrayList<>();
+        for (JSONObject object : jsonObjects) {
+            try {
+                Lottery lottery = new Lottery();
+                String lotteryDrawNum = object.getString("lotteryDrawNum");
+                lottery.setNumPeriods(Integer.valueOf(lotteryDrawNum));
+//                String pre = object.getString("lotteryUnsortDrawresult").split(" ")[0];
+//                String suf = object.getString("lotteryUnsortDrawresult").split(" ")[1];
+                String[] d = object.getString("lotteryDrawResult").split(" ");
+                lottery.setPreNum1(d[0]);
+                lottery.setPreNum2(d[1]);
+                lottery.setPreNum3(d[2]);
+                lottery.setPreNum4(d[3]);
+                lottery.setPreNum5(d[4]);
+                lottery.setSufNum1(d[5]);
+                lottery.setSufNum2(d[6]);
+                lottery.setDate(object.getString("lotteryDrawTime"));
+                lotteries.add(lottery);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        lotteries.parallelStream().forEach(item -> {
+            if (item.getNumPeriods() > lotteryLast.getNumPeriods()) {
+                insertLottery(item);
+            }
+        });
+        return 1;
     }
 
 }

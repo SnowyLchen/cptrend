@@ -54,6 +54,16 @@ public class Lottery extends PageFilter implements java.io.Serializable {
 
     private Integer currPageSize;
 
+    private Integer weekend;
+
+    public Integer getWeekend() {
+        return weekend;
+    }
+
+    public void setWeekend(Integer weekend) {
+        this.weekend = weekend;
+    }
+
     public Integer getCurrPageSize() {
         return currPageSize;
     }

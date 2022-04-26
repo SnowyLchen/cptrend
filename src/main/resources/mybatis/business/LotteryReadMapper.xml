@@ -14,6 +14,7 @@
         <result column="suf_num1" property="sufNum1"/>
         <result column="suf_num2" property="sufNum2"/>
         <result column="date" property="date"/>
+        <result column="weekend" property="weekend"/>
     </resultMap>
 
     <sql id="LotteryColumns">
@@ -32,12 +33,12 @@
         <include refid="LotteryColumns"/>
         FROM lottery
         ORDER BY num_periods DESC
-        limit  1
+        limit 1
     </select>
 
     <select id="selectLotteryList" resultMap="LotteryResult">
         SELECT
-        <include refid="LotteryColumns"/>
+        <include refid="LotteryColumns"/>,DAYOFWEEK(date)-1 weekend
         FROM lottery
         <where>
             <trim prefixOverrides="AND">
@@ -64,6 +65,9 @@
                 </if>
                 <if test="sufNum2 != null">
                     AND suf_num2 = #{sufNum2}
+                </if>
+                <if test="weekend != null">
+                    AND DAYOFWEEK(date)-1 = #{weekend}
                 </if>
             </trim>
         </where>

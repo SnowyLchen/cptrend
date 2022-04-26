@@ -2,6 +2,7 @@ package com.cj.cptrend.lottery.service;
 
 import com.cj.cptrend.lottery.domain.Lottery;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface ILotteryService {
      * @param lottery
      * @return 列表
      */
-    List<Lottery> selectLotteryList(Lottery lottery);
+    List<Lottery> selectLotteryList(Lottery lottery) throws ParseException;
 
     /**
      * 保存到数据库
@@ -51,4 +52,9 @@ public interface ILotteryService {
      */
     int deleteLottery(int numPeriods);
 
+    /**
+     * 获取最新数开奖结果
+     * @return
+     */
+    int getNewData() throws ParseException;
 }

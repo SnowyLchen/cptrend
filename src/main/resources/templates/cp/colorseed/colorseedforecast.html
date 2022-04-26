@@ -66,7 +66,7 @@
     }
 
     .t tr td:first-child {
-        width: 60%;
+        width: 10%;
     }
 
     .t td {
@@ -98,15 +98,15 @@
 
 
     .part1_li_1 {
-        width: 180% !important;
+        width: 30% !important;
     }
 
-    .part2_li_1 {
+    .part2_li_4, .borderLine {
         border-left-color: #000 !important;
         border-left-width: 2px !important;
     }
 
-    .part2_li_7, .part2_li_14, .part2_li_21, .part2_li_28, .part2_li_35 {
+    .part2_li_4, .part2_li_8, .part2_li_12, .part2_li_16, .part2_li_20, .part2_li_24, .part2_li_28 {
         border-right-color: #000 !important;
         border-right-width: 2px !important;
     }
@@ -181,7 +181,6 @@
                         <a href="#">排列三预测</a>
                         <a href="#">排列五预测</a>
                         <a href="#">七星彩预测</a>
-                        <a href="/colorSeed/colorseedforecast">大乐透预测</a>
                     </li>
                 </ul>
             </li>
@@ -228,13 +227,27 @@
     }
     var data = [[${cs}]];
 
-    function getLi(item, idx, num, choose, isTitle, isPos, preOrsuf, colspan) {
+    /**
+     *
+     * @param item 对象
+     * @param idx 下表
+     * @param num 显示的内容
+     * @param choose 是否是开奖号码
+     * @param isTitle 是否是表头
+     * @param isPos
+     * @param preOrsuf 前去还是后区
+     * @param colspan 是否合并 合并几个单元格
+     * @param colspanName 合并的名称
+     * @returns {string}
+     */
+    function getLi(item, idx, num, choose, isTitle, isPos, preOrsuf, colspan, colspanName) {
         // console.log(item)
+        var lastNum = parseInt(num) ? num.toString().slice(1, num.length) : num;
         var chooseCss = choose ? 'choose' : isTitle ? '' : 'ash';
         if (choose) {
-            return `<td isTitle = ${(!!isTitle)} class="character border items-center ${preOrsuf} justify-center ${preOrsuf}_li_${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${num}</div></td>`;
+            return `<td isTitle = ${(!!isTitle)} class="character border items-center ${preOrsuf} justify-center ${preOrsuf}_li_${idx} ${chooseCss}"><div class="cycle" isEvenNum="${item.numPeriods % 2 === 0}" id="${item.numPeriods}-${idx}" pos="${isPos}">${!!isTitle ? num : lastNum}</div></td>`;
         }
-        return `<td isTitle = ${(!!isTitle)} class="character border ${preOrsuf} items-center justify-center ${preOrsuf}_li_${idx} ${chooseCss}" ${colspan ? ('colspan=' + colspan) : ''}>${colspan ? '开奖结果' : num}</td>`;
+        return `<td isTitle = ${(!!isTitle)} class="character border ${preOrsuf} items-center justify-center ${preOrsuf}_li_${idx} ${chooseCss}" ${colspan ? ('colspan=' + colspan) : ''}>${colspan ? colspanName : lastNum}</td>`;
     }
 
     function getCell1(num) {
@@ -246,18 +259,19 @@
         $thisTable.append(`<tr></tr>`);
         var $this = $thisTable.find('tr');
         $this.append(`<td class="bg-purple-100 items-center justify-center li_0"><div id="headDiv">期数</div></td>`);
-        for (let i = 1; i < 55; i++) {
+        var temp = 1;
+        for (let i = 1; i < 36; i++) {
             if (i <= 7) {
                 var it1 = i < 10 ? ('0' + i) : i;
                 if (i == 1) {
-                    $this.append(getLi(null, i, it1, undefined, true, 0, 'part1', 7));
+                    $this.append(getLi(null, i, it1, undefined, true, 0, 'part1', 7, '开奖结果'));
                 }
-            } else if (i > 7 && i <= 42) {
-                var it2 = (i - 7) < 10 ? ('0' + (i - 7)) : (i - 7);
-                $this.append(getLi(null, (i - 7), it2, undefined, true, 0, 'part2'));
             } else {
-                var it = (i - 42) < 10 ? ('0' + (i - 42)) : (i - 42);
-                $this.append(getLi(null, i - 42, it, undefined, true, 1, 'part3'));
+                var it2 = (i - 7) < 10 ? ('0' + (i - 7)) : (i - 7);
+                if (it2 % 4 == 0) {
+                    $this.append(getLi(null, (i - 7), it2, undefined, true, 0, 'part2', 4, '第' + temp + '位'));
+                    temp++
+                }
             }
         }
     }
@@ -271,30 +285,57 @@
                 data.push(getInput(item['sufNum' + (i - 5)]));
             }
         }
-        for (let i = 1; i < 55; i++) {
+        var temp = 1;
+        for (let i = 1; i < 36; i++) {
             if (JSON.stringify(data).indexOf('input') > -1) {
                 $this.append(getLi(item, i, data[0], true, undefined, 0, 'part1'));
             } else {
                 if (i <= 7) {
                     var it1 = i < 6 ? 'preNum' + i : 'sufNum' + (i - 5);
                     $this.append(getLi(item, i, item[it1], true, undefined, 0, 'part1'));
-                } else if (i > 7 && i <= 42) {
-                    var it2 = (i - 7) < 10 ? ('0' + (i - 7)) : (i - 7);
-                    $this.append(getLi(item, i - 7, it2, data.slice(0, 5).includes(it2 + ''), undefined, 1, 'part2'));
                 } else {
-                    var it3 = (i - 42) < 10 ? ('0' + (i - 42)) : (i - 42);
-                    $this.append(getLi(item, i - 42, it3, data.slice(5, data.length).includes(it3 + ''), undefined, 1, 'part3'));
+                    var it2 = (i - 7) < 10 ? ('0' + (i - 7)) : (i - 7);
+                    // 创建表格
+                    $this.append(createCalcRow((it2 % 4) === 0 ? 4 : it2 % 4, temp));
+                    if (it2 % 4 == 0) {
+                        temp++;
+                    }
                 }
             }
         }
     }
 
-    function PrefixInteger(num, n) {
-        return (Array(n).join(0) + num).slice(-n);
+    /**
+     *
+     * @param pos 第几位数的第几位
+     * @param currPosition 第几位
+     */
+    function createCalcRow(pos, currPosition) {
+        var tableId = document.getElementById("colorTable"), nums = [], grammars = [
+            {1: 0, 2: [1, 2], 3: [3, 4], 4: [5, 6]},//第1位
+            {1: 1, 2: [2, 3], 3: [4, 5], 4: [6, 0]},//第2位
+            {1: [0, 1], 2: 2, 3: [3, 4], 4: [5, 6]},//第3位
+            {1: 3, 2: [4, 5], 3: [0, 6], 4: [1, 2]},//第4位
+            {1: [0, 1], 2: [2, 3], 3: 4, 4: [5, 6]},//第5位
+            {1: 5, 2: [0, 6], 3: [1, 2], 4: [3, 4]},//第6位
+            {1: [0, 1], 2: [2, 3], 3: [4, 5], 4: 6}//第7位
+        ];
+        var cell = tableId.rows[tableId.rows.length - 1].cells;
+        for (let j = 0; j < cell.length; j++) {
+            if ($(cell[j]).is('.choose')) {
+                nums.push($(cell[j]).text());
+            }
+        }
+        var grammar = grammars[currPosition - 1][pos];
+        if (!Array.isArray(grammar)) {
+            return `<td class="character border items-center justify-center ${pos == 1 ? 'borderLine' : ''}" style="color: #FF8C00;font-weight:1000;background-color: #FAFAD2 ;">${nums[grammar]}</td>`;
+        }
+        var n = parseInt(nums[grammar[0]]) + parseInt(nums[grammar[1]]);
+        return `<td class="character border items-center justify-center ${pos == 1 ? 'borderLine' : ''}">${n.toString().length == 1 ? n : n.toString().slice(1, n.length)}</td>`;
     }
 
     function getInput(item) {
-        return item ? item : `<input type="text" maxlength="2" class="lastRow" onkeydown="PrefixInteger(this.value,2)"/>`
+        return item ? item : `<input type="text" maxlength="2" class="lastRow"/>`
     }
 
 
@@ -455,9 +496,9 @@
         rowData.part2 = _p2;
         rowData.part3 = _p3;
         // lineToeach(rowData.part1);
-        lineToeach(rowData.part2);
-        lineToeach(rowData.part3);
-        renderAppearNum('part2')
+        // lineToeach(rowData.part2);
+        // lineToeach(rowData.part3);
+        // renderAppearNum('part2')
     }
 
     $(function () {
